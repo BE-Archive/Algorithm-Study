@@ -18,7 +18,7 @@
   </tr>
   <tr>
     <td>언어</td>
-    <td>JAVA, C++
+    <td>JAVA, C++, Python
   </tr>
   <tr>
     <td>플랫폼</td>
@@ -33,14 +33,29 @@
  <tr>
     <td align="center"><a href="https://github.com/wnso-kim"><img src="https://avatars.githubusercontent.com/wnso-kim" width="130px;""></a></td>
     <td align="center"><a href="https://github.com/trankill1127"><img src="https://avatars.githubusercontent.com/trankill1127" width="130px;""></a></td>
+    <td align="center"><a href="https://github.com/seoyoung059"><img src="https://avatars.githubusercontent.com/seoyoung059" width="130px;""></a></td>
+    <td align="center"><a href="https://github.com/sickbirdd"><img src="https://avatars.githubusercontent.com/sickbirdd" width="130px;""></a></td>
+    <td align="center"><a href="https://github.com/u1qns"><img src="https://avatars.githubusercontent.com/u1qns" width="130px;""></a></td>
+    <td align="center"><a href="https://github.com/violetadieu"><img src="https://avatars.githubusercontent.com/violetadieu" width="130px;""></a></td>
+    <td align="center"><a href="https://github.com/ys4512558"><img src="https://avatars.githubusercontent.com/ys4512558" width="130px;""></a></td>
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/wnso-kim"><b>wnso-kim</b></a></td>
     <td align="center"><a href="https://github.com/trankill1127"><b>trankill1127</b></a></td>
+    <td align="center"><a href="https://github.com/seoyoung059"><b>seoyoung059</b></a></td>
+    <td align="center"><a href="https://github.com/sickbirdd"><b>sickbirdd</b></a></td>
+    <td align="center"><a href="https://github.com/u1qns"><b>u1qns</b></a></td>
+    <td align="center"><a href="https://github.com/violetadieu"><b>violetadieu</b></a></td>
+    <td align="center"><a href="https://github.com/ys4512558"><b>ys4512558</b></a></td>
   </tr>
   <tr> 
-    <td align="center"><img src="https://img.shields.io/badge/Java-007396.svg?&style=for-the-badge&logo=Java&logoColor=white"></td>
+    <td align="center"><img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white"></td>
     <td align="center"><img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white"><br/><img src="https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white"></td>
+    <td align="center"><img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white"><br/><img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54"></td>
+    <td align="center"><img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white"><br/><img src="https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white"></td>
+    <td align="center"><img src="https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white"></td>
+    <td align="center"><img src="https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white"><br/><img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54"></td>
+    <td align="center"><img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white"></td>
   </tr> 
 </table>
 <br/>
