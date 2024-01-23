@@ -34,8 +34,6 @@ int main() {
         }
         answer+=max(0,min(left,right)-rain[i]);
     }
-
     cout<<answer<<endl;
-
     return 0;
 }
