@@ -32,7 +32,6 @@ struct cmp
 void solve()
 {
 	std::priority_queue<T, std::vector<T>, cmp> pq;
-
 	pq.push({{0, 0}, map[0][0]});
 	visited[0][0] = true;
 
