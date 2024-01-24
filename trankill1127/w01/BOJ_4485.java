@@ -1,68 +1,74 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class BOJ_4485 {
 
-    static int [] dx = {-1,0,1,0};
-    static int [] dy = {0,1,0,-1};
-    static Integer n;
-    static Integer[][] arr;
-    static boolean [][] visited;
-    static int minRupee;
-    static int rupee;
+    public static class Pair {
+        int x;
+        int y;
 
-    public static void DFS(int x, int y){
-        if (x==n-1 && y==n-1){
-            if (rupee<minRupee) {
-                minRupee=rupee;
-            }
-            return;
+        public Pair(int x, int y) {
+            this.x = x;
+            this.y = y;
         }
+    }
 
-        //System.out.println("processing...");
+    static int[] dx = {-1, 0, 1, 0};
+    static int[] dy = {0, 1, 0, -1};
+    static int n;
+    static Integer[][] map;
+    static Integer[][] rupee; //손해액 기록 배열
 
-        for (int i=0; i<4; i++) {
-            if (x + dx[i] < 0 || x + dx[i] > n - 1 || y + dy[i] < 0 || y + dy[i] > n - 1)
-                continue;
 
-            if (!visited[x + dx[i]][y + dy[i]] ) {
-                visited[x + dx[i]][y + dy[i]]=true;
-                rupee += arr[x + dx[i]][y + dy[i]];
-                if (rupee<minRupee){
-                    DFS(x + dx[i], y + dy[i]);
+    public static void BFS(int x, int y) {
+        Queue<Pair> q = new LinkedList<>();
+        rupee[0][0] = map[0][0];
+        q.add(new Pair(x, y));
+
+        while (!q.isEmpty()) {
+            Pair now = q.poll();
+
+            for (int i = 0; i < 4; i++) {
+                int ix = now.x + dx[i];
+                int iy = now.y + dy[i];
+                if (0 <= ix && ix < n && 0 <= iy && iy < n && map[ix][iy]+rupee[now.x][now.y]<rupee[ix][iy]) {
+                    rupee[ix][iy]=map[ix][iy]+rupee[now.x][now.y];
+                    q.add(new Pair(ix, iy));
                 }
-                visited[x + dx[i]][y + dy[i]]=false;
-                rupee -= arr[x + dx[i]][y + dy[i]];
             }
+
         }
     }
 
     public static void main(String[] args) throws IOException {
 
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-        n=Integer.parseInt(bf.readLine());
+        n = Integer.parseInt(bf.readLine());
 
         int trial = 1;
-        while (n!=0){
-
-            arr = new Integer[n][n];
-            for (int i=0; i<n; i++){
+        while (n != 0) {
+            map = new Integer[n][n];
+            for (int i = 0; i < n; i++) {
                 String[] s = bf.readLine().split(" ");
-
-                for (int j=0; j<n; j++){
-                    arr[i][j]=Integer.parseInt(s[j]);
+                for (int j = 0; j < n; j++) {
+                    map[i][j] = Integer.parseInt(s[j]);
                 }
             }
 
-            minRupee = Integer.MAX_VALUE;
-            rupee=arr[0][0];
-            visited = new boolean[n][n];
-            DFS(0, 0);
+            rupee = new Integer[n][n];
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    rupee[i][j] = Integer.MAX_VALUE;
+                }
+            }
 
-            System.out.println("Problem "+trial+": "+minRupee);
+            BFS(0, 0);
+            System.out.println("Problem " + trial + ": " + rupee[n - 1][n - 1]);
 
-            n=Integer.parseInt(bf.readLine());
+            n = Integer.parseInt(bf.readLine());
             trial++;
         }
     }
