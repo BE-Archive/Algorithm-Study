@@ -1,3 +1,4 @@
+package Week_01;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class Main {
         List<Integer> primeNumbers = new ArrayList<>();
         primeNumbers.add(2); primeNumbers.add(3); primeNumbers.add(5); primeNumbers.add(7);
 
-        int max = (int)Math.pow(10, N/2+1);
+        int max = (int)Math.pow(10, (N+1)/2);
         for(int num=11; num<max; num++){
             if(isPrime(num)) primeNumbers.add(num);
         }
