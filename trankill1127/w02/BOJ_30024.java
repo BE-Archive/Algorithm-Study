@@ -3,8 +3,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
-public class BOJ_30024 {
 
+public class BOJ_30024 {
     static class Corn implements Comparable<Corn>{
         int x, y, value;
         public Corn(int x,int y,int value){
@@ -88,18 +88,3 @@ public class BOJ_30024 {
         System.out.println(sb.toString());
     }
 }
-/*
- * n*m 크기의 밭
- * 각 옥수수의 가치 1~n*m
- * 민석이는 옥수수밭 밖에 있고
- * 바깥에 인접한 옥수수, 혹은 이미 옥수수 따서 빈 공간의 상하좌우까지 고려
- * 접근할 수 있는 것 중에서 가치가 가장 큰 거 K개를 골라서
- * 각각의 위치를 순서대로 출력해야 한다.
- */
-//일단 주변부는 계속 검색해야 함...
-//단지 여기서 검색 부분이 하나 찍먹 할 때마다 느는게 그렇지...
-//좌표랑 옥수수 가치를 같이 저장
-//우선순위 큐,,,,? compareTo 기준을 옥수수 가치로 하는거지
-//그러면 가치가 제일 높은 애를 뽁 뽑을거잖아??
-//걔 좌표 상하좌우 중에서 검색 대상에 없는 애 있으면 추가
-//k = min(n*m, 100_000)
