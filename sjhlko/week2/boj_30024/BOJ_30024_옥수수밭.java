@@ -1,4 +1,4 @@
-package sjhlko.week2;
+package sjhlko.week2.boj_30024;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
