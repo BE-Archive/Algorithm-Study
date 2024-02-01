@@ -2,16 +2,25 @@
 
 using namespace std;
 int main(){
+
+    cin.tie(NULL);
+    cout.tie(NULL);
+
     int n;
-    int DP[100000]={0,};
+    int Dp[100000]={0,};
+
     cin>>n;
-    DP[0]=0%9901;
-    DP[1]=3%9901;
-    DP[2]=7%9901;
+//초깃값
+
+    Dp[1]=3%9901;
+    Dp[2]=7%9901;
+//3부터 n까지
 
     for(int i=3;i<=n;i++){
-        DP[i]=((2*DP[i-1])+DP[i-2])%9901;
+        Dp[i]=((2*Dp[i-1])+Dp[i-2])%9901;
     }
-    cout<<DP[n];
+
+    cout<<Dp[n]<<endl;
+
     return 0;
 }
