@@ -1,4 +1,4 @@
-package seoyoung059.Week_02;
+package seoyoung059.Week_03;
 
 import java.io.BufferedReader;
 import java.io.IOException;
