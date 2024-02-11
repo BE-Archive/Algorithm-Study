@@ -4,22 +4,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class BOJ_2750_수정렬하기_삽입정렬_서정희 {
-    //https://www.acmicpc.net/problem/2750
-    //수 정렬하기
+public class BOJ_2750_수정렬하기_버블정렬 {
     static int N;
     static int[] arr;
 
-    static void insertionSort() {
+    static void bubbleSort() {
         for (int i = 0; i < N; i++) {
-            int now = arr[i];
-            for (int j = i - 1; j >= 0; j--) {
-                if (now < arr[j]) {
-                    arr[j + 1] = arr[j];
-                    arr[j] = now;
-                    continue;
+            for (int j = 0; j < N - i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    int tmp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = tmp;
                 }
-                break;
             }
         }
     }
@@ -39,7 +35,7 @@ public class BOJ_2750_수정렬하기_삽입정렬_서정희 {
         for (int i = 0; i < N; i++) {
             arr[i] = Integer.parseInt(bf.readLine());
         }
-        insertionSort();
+        bubbleSort();
         printAns();
     }
 }
