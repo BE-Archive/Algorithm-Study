@@ -3,7 +3,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
-public class BOJ_2096_내려가기_서정희 {
+public class BOJ_2096_내려가기 {
     //https://www.acmicpc.net/problem/2096
     //내려가기
     static int[][] nums, dpMin, dpMax;
