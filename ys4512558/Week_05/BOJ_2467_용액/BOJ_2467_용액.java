@@ -21,8 +21,8 @@ public class BOJ2467 {
 
         int num1 = 0;
         int num2 = 0;
-        for (int i = 0; i < N; i++) {
-            int idx = lowerBound(arr, 0, arr.length - 1, -arr[i]);
+        for (int i = 0; i < N - 1; i++) {
+            int idx = lowerBound(arr, i + 1, arr.length - 1, -arr[i]);
             if (idx != i && Math.abs(arr[i] + arr[idx]) < Math.abs(min)) {
                 min = arr[i] + arr[idx];
                 num1 = arr[i];
@@ -33,11 +33,6 @@ public class BOJ2467 {
                 num1 = arr[i];
                 num2 = arr[idx - 1];
             }
-            if (idx + 1 < N && idx + 1 != i && Math.abs(arr[i] + arr[idx + 1]) < Math.abs(min)) {
-                min = arr[i] + arr[idx + 1];
-                num1 = arr[i];
-                num2 = arr[idx + 1];
-            }
         }
         sb.append(num1).append(" ").append(num2);
         bw.write(sb.toString());
@@ -46,10 +41,9 @@ public class BOJ2467 {
     }
 
     private static int lowerBound(int[] arr, int start, int end, int value) {
-
         while (start < end) {
             int mid = (start + end) / 2;
-            if (arr[mid] <= value) {
+            if (arr[mid] < value) {
                 start = mid + 1;
             } else {
                 end = mid;
