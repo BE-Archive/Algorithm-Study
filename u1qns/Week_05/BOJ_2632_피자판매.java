@@ -14,72 +14,71 @@ public class Main {
 
 	static int A[], B[];
 	static int K, N, M, answer = 0;
-
-	static boolean[] isSelected; // 이미 탐색해본 합
 	
-	static void pickA()
+	static int[] pick(final int pizza[])
 	{
-		// A피자로 만들 수 있는 조합을 구한다.
-		// 구한 합에서 K를 빼서 그 값을 B피자로 만들 수 있는지 본다.
-		int start=0, end=0, sum = 0;
-		for(int i=0; i<N; ++i)
-			pickB(A[i]);
+		// 피자의 모든 조합을 여기서 구한다 ! 
+		int result[] = new int[K+1];
 		
-		while(start < N)
+		int range = pizza.length;
+		int sum = 0, cnt = 0;
+		int total = 0;
+		for(int i=0; i<range; ++i)
 		{
-			//pickB(sum);
+			if(pizza[i] > K) continue;
 			
-			if(sum <= K)
+			//System.out.printf("SUM : %d \n", pizza[i]);
+			result[pizza[i]]++;
+			total += pizza[i];
+		}
+		
+		result[0] = 1;
+		
+		// 홀 피자 만드는 짓은 한번만 하고 싶다.
+		
+		for(int i=0; i<range; ++i)
+		{
+			sum = pizza[i];
+			cnt = range-1;
+			for(int j=i+1; cnt>0; ++j)
 			{
-				sum += A[end];
-				end = (end+1)%N;
-				pickB(sum);
-			}
-			else if(sum > K)
-			{
-				sum-=A[start++];
+				j = j%range;
+				sum += pizza[j];
+				if(sum > K) break;
+				--cnt;
+				//System.out.printf("SUM : %d \n", sum);
+				result[sum]++;
 			}
 		}
 		
+		if(total <= K)
+			result[total] = 1;
+		
+		return result;
 	}
 	
-	static void pickB(final int rest)
+	static void solve()
 	{
-		//System.out.printf("A SUM : %d\n", rest);
-		if(rest > K)
-			return;
+		// 1. A에서 가능한 조합을 만들자. 
+		// 이 조합의 합이 K 이하라면 
+		// 2. 나머지를 B에서 만들자
 		
-
-		
-		int start = 0, end = 0, sum = rest;
-		while(start < M)
+		int[] sumA = pick(A);
+		//System.out.println("\n=====================");
+		int[] sumB = pick(B);
+		for(int i=0; i<=K; ++i)	
 		{
-			if(sum == K)
-			{
-				//System.out.printf("[ANSWER] : %d + [%d, %d] \n", rest, start, end);
-				++answer;
-				return;
-			}
-			
-			if(sum < K)
-			{
-				sum += B[end];
-				end = (end+1)%M;
-			}
-			else if(sum > K)
-			{
-				sum -= B[start++];
-			}
+			answer += (sumA[i] * sumB[K-i]);
+			//System.out.printf("answer += %d * %d = %d\n", sumA[i], sumB[K-i], answer);
+
 		}
 	}
-	
 	
 	public static void main(String[] args) throws IOException {
 	
 		br = new BufferedReader(new InputStreamReader(System.in));
 
 		K = Integer.parseInt(br.readLine());
-		isSelected = new boolean [K];
 
 		st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
@@ -93,7 +92,7 @@ public class Main {
 			B[i] = Integer.parseInt(br.readLine());
 		
 		
-		pickA();
+		solve();
 		
 		System.out.print(answer);
 		
