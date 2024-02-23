@@ -1,4 +1,4 @@
-package seoyoung059.Week_02;
+package seoyoung059.Week_02.BOJ_2573;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
