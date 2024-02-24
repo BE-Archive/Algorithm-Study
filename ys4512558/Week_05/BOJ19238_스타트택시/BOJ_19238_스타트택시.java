@@ -7,7 +7,7 @@ public class BOJ19238 {
     static int[][] map;
     static int[] dx = {-1, 1, 0, 0};
     static int[] dy = {0, 0, -1, 1};
-    static ArrayList<Passenger> passengers;
+    static Map<Pair, Pair> passengers;
     static int N, M, K;
     static Pair start;
     public static void main(String[] args) throws IOException {
@@ -32,7 +32,7 @@ public class BOJ19238 {
 
         start = new Pair(Integer.parseInt(st.nextToken()) - 1, Integer.parseInt(st.nextToken()) - 1, 0);
 
-        passengers = new ArrayList<>(M);
+        passengers = new HashMap<>();
 
         for (int i = 0; i < M; i++) {
             st = new StringTokenizer(br.readLine());
@@ -40,103 +40,110 @@ public class BOJ19238 {
             int y = Integer.parseInt(st.nextToken()) - 1;
             int destX = Integer.parseInt(st.nextToken()) - 1;
             int destY = Integer.parseInt(st.nextToken()) - 1;
-            passengers.add(new Passenger(x, y, 0, destX, destY));
+            passengers.put(new Pair(x, y, 0), new Pair(destX, destY, 0));
         }
 
-        sb.append(findShort());
+        sb.append(solve());
         bw.write(sb.toString());
         bw.flush();
         bw.close();
     }
 
-    private static int findShort() {
-        for (int i = 0; i < passengers.size(); i++) {
-            if (!bfs()) return -1;
-            i--;
+    private static int solve() {
+        while (!passengers.isEmpty()) {
+            Pair dest = bfs1();
+            if (dest == null) return -1;
+            if (!bfs2(dest)) return -1;
+
         }
         return K;
     }
 
-    private static boolean bfs() {
+    private static boolean bfs2(Pair dest) {
+        //승객에게 도착한 후 목적지로 이동 시키기
+        boolean[][] isv = new boolean[N][N];
+        Queue<Pair> queue = new ArrayDeque<>();
+        queue.offer(new Pair(start.x, start.y, 0));
+        isv[start.x][start.y] = true;
+        if (start.x == dest.x && start.y == dest.y) return true;
+
+
+        while (!queue.isEmpty()) {
+            Pair p = queue.poll();
+
+            if(K < p.breadth) return false;
+            if (p.equals(dest)) {
+                K += p.breadth;// K - (p.breadth + 1) + (2 * (p.breadth + 1));
+                start = p;
+                return true;
+            }
+            for (int i = 0; i < 4; i++) {
+                int x = p.x + dx[i];
+                int y = p.y + dy[i];
+
+                if (x < 0 || x >= N || y < 0 || y >= N || isv[x][y] || map[x][y] == 1) continue;
+
+                isv[x][y] = true;
+                queue.offer(new Pair(x, y, p.breadth + 1));
+            }
+        }
+        return false;
+    }
+
+    private static Pair bfs1() {
         boolean[][] isv = new boolean[N][N];
         Queue<Pair> queue = new ArrayDeque<>();
         queue.offer(new Pair(start.x, start.y, 0));
         isv[start.x][start.y] = true;
 
         int size = 0; //동일 너비 처리
-        int breadth = 0;
-        Passenger passenger = null;
-        Loop: while (!queue.isEmpty()) {
-            for (int i = 0; i < passengers.size(); i++) {
-                if(passengers.get(i).x == start.x && passengers.get(i).y == start.y){
-                    passenger = passengers.get(i);
-                    break Loop;
-                }
-            }
+        Pair passenger = null;
+        Pair dest = null;
+        Pair pass = passengers.get(new Pair(start.x, start.y, 0));
+        if(pass != null) {
+            dest = pass;
+            passengers.remove(new Pair(start.x, start.y, 0));
+            return dest;
+        }
+        while (!queue.isEmpty()) {
             size = queue.size();
             while (size-- > 0) {
                 Pair p = queue.poll();
 
+                if (K < p.breadth) return null;
+                Pair check = passengers.get(p);
+                if(check != null){
+                    if (passenger == null) {
+                        passenger = p;
+                        dest = check;
+                    } else {
+                        if (passenger.x > p.x || (passenger.x == p.x && passenger.y > p.y)) {
+                            passenger = p;
+                            dest = check;
+                        }
+                    }
+                }
                 for (int i = 0; i < 4; i++) {
                     int x = p.x + dx[i];
                     int y = p.y + dy[i];
 
                     if (x < 0 || x >= N || y < 0 || y >= N || isv[x][y] || map[x][y] == 1) continue;
-                    for (int j = 0; j < passengers.size(); j++) {
-                        Passenger pass = passengers.get(j);
-                        if (x == pass.x && y == pass.y) {
-                            if(K < (p.breadth + 1)) return false;
-                            breadth = (p.breadth + 1);
-                            if(passenger == null){
-                                passenger = pass;
-                            } else {
-                                if(passenger.x == pass.x){
-                                    passenger = passenger.y < pass.y ? passenger : pass;
-                                } else{
-                                    passenger = passenger.x < pass.x ? passenger : pass;
-                                }
-                            }
-                        }
-                    }
+
+                    Pair passen = new Pair(x, y, p.breadth + 1);
                     isv[x][y] = true;
-                    queue.offer(new Pair(x, y, p.breadth + 1));
+                    queue.offer(passen);
                 }
             }
             if (passenger != null) {
+                K -= passenger.breadth;
                 passengers.remove(passenger);
-                K -= breadth;
+                start.x = passenger.x;
+                start.y = passenger.y;
                 break;
             }
         }
-        if(passenger == null) return false;
-
-        //승객에게 도착한 후 목적지로 이동 시키기
-        isv = new boolean[N][N];
-        queue = new ArrayDeque<>();
-        queue.offer(new Pair(passenger.x, passenger.y, 0));
-        isv[passenger.x][passenger.y] = true;
-
-        while (!queue.isEmpty()) {
-            Pair p = queue.poll();
-
-            for (int i = 0; i < 4; i++) {
-                int x = p.x + dx[i];
-                int y = p.y + dy[i];
-
-                if (x < 0 || x >= N || y < 0 || y >= N || isv[x][y] || map[x][y] == 1) continue;
-                if(K < 0) return false;
-                if (x == passenger.destX && y == passenger.destY) {
-                    if(K < (p.breadth + 1)) return false;
-                    K += (p.breadth + 1);// K - (p.breadth + 1) + (2 * (p.breadth + 1));
-                    start.x = x;
-                    start.y = y;
-                    return true;
-                }
-                isv[x][y] = true;
-                queue.offer(new Pair(x, y, p.breadth + 1));
-            }
-        }
-        return false;
+        if(passenger == null) return null;
+        return dest;
     }
 }
 
@@ -156,14 +163,17 @@ class Pair implements Comparable<Pair>{
         }
         return Integer.compare(this.x, o.x);
     }
-}
 
-class Passenger extends Pair{
-    int destX, destY;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pair pair = (Pair) o;
+        return x == pair.x && y == pair.y;
+    }
 
-    public Passenger(int x, int y, int breadth, int destX, int destY) {
-        super(x, y, breadth);
-        this.destX = destX;
-        this.destY = destY;
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 }
