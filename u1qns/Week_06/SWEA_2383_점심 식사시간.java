@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
 
 public class Solution {
 
-    // 정렬 추가 
+	// 정렬 추가
 	static class Info implements Comparable<Info> {
 		int x, y, d, time;
 
@@ -41,22 +41,22 @@ public class Solution {
 	}
 
 	static void go() {
-		// 계단
+
 		int result = 0;
 
-    // 계단으로 이동 중인 사람
+		// 계단으로 이동 중인 사람
 		List<Info> A = new LinkedList<>();
 		List<Info> B = new LinkedList<>();
 
-    // 계단에 도착한 사람
+		// 계단에 도착한 사람
 		List<Info> stairA = new LinkedList<>();
 		List<Info> stairB = new LinkedList<>();
 
-    // 이동 후에도 이동 중인 사람만 담은 리스트
+		// 이동 후에도 이동 중인 사람만 담은 리스트
 		List<Info> tmpA = new LinkedList<>();
 		List<Info> tmpB = new LinkedList<>();
 
-    // 계단에서 탈출 못 한 사람만 담은 리스트
+		// 계단에서 탈출 못 한 사람만 담은 리스트
 		List<Info> tmpA2 = new LinkedList<>();
 		List<Info> tmpB2 = new LinkedList<>();
 
@@ -79,60 +79,52 @@ public class Solution {
 			if (A.isEmpty() && stairA.isEmpty() && B.isEmpty() && stairB.isEmpty())
 				break;
 
-      // 계단에 있는 사람들 중 3명만 내려가
-      // 계단에 머물면 TMP에 넣는다.
-      
+			// 계단에 있는 사람들 중 3명만 내려가
+			// 계단에 머물면 TMP에 넣는다.
+
 			tmpA = new LinkedList<>();
 			tmpB = new LinkedList<>();
 
 			int countA = 0;
 			for (int i = 0; i < stairA.size(); ++i) {
-				if (countA < 3)
-        {
-          countA++;
+				if (countA < 3) {
+					countA++;
 					if (--stairA.get(i).time != 0)
 						tmpA.add(stairA.get(i));
-				} 
-        else
+				} else
 					tmpA.add(stairA.get(i));
 			}
 
 			int countB = 0;
 			for (int i = 0; i < stairB.size(); ++i) {
-				if (countB < 3) 
-        {
-          countB++;
+				if (countB < 3) {
+					countB++;
 					if (--stairB.get(i).time != 0)
 						tmpB.add(stairB.get(i));
-				} 
-        else
+				} else
 					tmpB.add(stairB.get(i));
-      }
-			
-
+			}
 
 			// -------------------------
 
-      // 이동 못 한 친구들을 빨리 계단으로 이동하도록..
-      // 아직도 이동 중이면 tmp2
-      // 계단으로 갔다면 tmp
-			for (int i = 0; i < A.size(); ++i) 
-      {
+			// 이동 못 한 친구들을 빨리 계단으로 이동하도록..
+			// 아직도 이동 중이면 tmp2
+			// 계단으로 갔다면 tmp
+			for (int i = 0; i < A.size(); ++i) {
 				if (--A.get(i).d == 0)
 					tmpA.add(A.get(i)); // 계단
 				else
 					tmpA2.add(A.get(i));
 			}
 
-			for (int i = 0; i < B.size(); ++i) 
-      {
+			for (int i = 0; i < B.size(); ++i) {
 				if (--B.get(i).d == 0)
 					tmpB.add(B.get(i)); // 계단
 				else
 					tmpB2.add(B.get(i));
 			}
 
-      // 위 로직에 따라 이동할 친구들은 보내주고 남은 애들 처리 
+			// 위 로직에 따라 이동할 친구들은 보내주고 남은 애들 처리
 			A = tmpA2;
 			B = tmpB2;
 
@@ -149,7 +141,7 @@ public class Solution {
 		answer = Math.min(result, answer);
 	}
 
-  // 만들 수 있는 조합 찾기
+	// 만들 수 있는 조합 찾기
 	static void pick(int cnt, int idx, int r) {
 		if (cnt == r) {
 			go();
@@ -157,12 +149,12 @@ public class Solution {
 		}
 
 		for (int i = idx; i < person.size(); ++i) {
-			
-			if (isSelected[i]) continue;
+
 			isSelected[cnt] = true;
 			pick(cnt + 1, i + 1, r);
+
 			isSelected[cnt] = false;
-      
+			pick(cnt + 1, i + 1, r);
 		}
 	}
 
@@ -174,11 +166,11 @@ public class Solution {
 
 		int T = Integer.parseInt(br.readLine());
 		for (int tc = 1; tc <= T; ++tc) {
-			// init
+
 			person.clear();
 			stair.clear();
-
 			answer = Integer.MAX_VALUE;
+			
 			N = Integer.parseInt(br.readLine());
 			map = new int[N][N];
 
@@ -186,12 +178,12 @@ public class Solution {
 				st = new StringTokenizer(br.readLine());
 				for (int j = 0; j < N; ++j) {
 					map[i][j] = Integer.parseInt(st.nextToken());
-          
+
 					if (map[i][j] == 1)
 						person.add(new Info(i, j));
 					else if (map[i][j] != 0)
 						stair.add(new Info(i, j, map[i][j]));
-					
+
 				}
 			}
 
