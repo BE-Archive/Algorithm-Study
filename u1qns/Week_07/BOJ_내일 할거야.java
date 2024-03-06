@@ -24,16 +24,8 @@ public class Main {
 		answer = pq.peek()[0];
 		while(!pq.isEmpty())
 		{
-
-			if(answer <= pq.peek()[0])
-			{
-				answer -= pq.peek()[1];
-			}
-			else
-			{
-				answer = pq.peek()[0];
-				answer -= pq.peek()[1];
-			}
+			answer = Math.min(pq.peek()[0], answer);
+			answer -= pq.peek()[1];
 			pq.poll();
 		}
 		
