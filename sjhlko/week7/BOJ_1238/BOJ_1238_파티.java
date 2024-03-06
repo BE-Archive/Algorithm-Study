@@ -10,6 +10,7 @@ public class BOJ_1238_파티 {
     //파티
     static int X;
     static int N;
+    static int[] XtoHome = null;
 
     public static class Node {
         int dest;
@@ -22,6 +23,7 @@ public class BOJ_1238_파티 {
     }
 
     public static int dijkstra(int source, int dest, ArrayList<ArrayList<Node>> graph) {
+        if(source==X && XtoHome!=null) return XtoHome[dest];
         PriorityQueue<Node> pq = new PriorityQueue<>(
                 Comparator.comparingInt(o1 -> o1.cost)
         );
@@ -32,16 +34,16 @@ public class BOJ_1238_파티 {
         while (!pq.isEmpty()) {
             Node u = pq.poll();
             if (u.cost > dist[u.dest]) continue;
-                // u에서 갈 수 있는 모든 길(노드) 탐색
-                for (Node v : graph.get(u.dest)) {
-                    // u에서 v로 갈 수 있는 비용 갱신
-                    if (dist[v.dest] <= dist[u.dest] + v.cost) continue;
-                    dist[v.dest] = dist[u.dest] + v.cost;
-                    // 갱신되었다면 기존 v에서 갈 수 있는 길들의 비용을 다시 갱신하기 위해 큐에 삽입
-                    pq.add(new Node(v.dest, dist[v.dest]));
-                }
+            // u에서 갈 수 있는 모든 길(노드) 탐색
+            for (Node v : graph.get(u.dest)) {
+                // u에서 v로 갈 수 있는 비용 갱신
+                if (dist[v.dest] <= dist[u.dest] + v.cost) continue;
+                dist[v.dest] = dist[u.dest] + v.cost;
+                // 갱신되었다면 기존 v에서 갈 수 있는 길들의 비용을 다시 갱신하기 위해 큐에 삽입
+                pq.add(new Node(v.dest, dist[v.dest]));
+            }
         }
-
+        if(source==X) XtoHome = dist;
         return dist[dest];
     }
 
