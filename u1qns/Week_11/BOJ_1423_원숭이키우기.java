@@ -1,8 +1,5 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Scanner;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class B1423 {
 	
@@ -10,11 +7,11 @@ public class B1423 {
 	static StringBuilder sb = new StringBuilder();
 	static StringTokenizer st;
 
-  static int N, D;
-  static long sum;
+	static int N, D;
+	static long sum;
 
-  static int[] cnt, power;
-  static long[] DP;
+	static int[] cnt, power;
+	static long[] DP;
 
 
     private static void init() throws IOException
@@ -24,21 +21,12 @@ public class B1423 {
         power = new int[N+1];
  
         st = new StringTokenizer(br.readLine());
-        for (int i = 1; i <= N; ++i) 
-            cnt[i] = Integer.parseInt(st.nextToken());
+        for (int i = 1; i <= N; ++i) cnt[i] = Integer.parseInt(st.nextToken());
 
-		st = new StringTokenizer(br.readLine());
-        for (int i = 1; i <= N; ++i)
-            power[i] = Integer.parseInt(st.nextToken());
+	st = new StringTokenizer(br.readLine());
+        for (int i = 1; i <= N; ++i) power[i] = Integer.parseInt(st.nextToken());
 
         D = Integer.parseInt(br.readLine());
-        
-        
-        
-        
-        
-        
-        // 플레이 가능 일수로 DP를 만들어야 하는 문제다. 
         DP = new long[D+1];
     }
 
@@ -50,10 +38,8 @@ public class B1423 {
             cnt[i] = (cnt[i] < D ? cnt[i] : D);
         }
 
-        // 주어진 캐릭터 레벨대를 1부터 쭉 올려보자
         for (int i = 1; i <= N; ++i)
         {
-            // 있는 레벨 (최대 D) 을 다 레벨 업 해보자
             while (cnt[i]-- > 0)
             {
                 for (int j = D; j >= 0; --j)
@@ -66,12 +52,10 @@ public class B1423 {
     }
 
     public static void main(String[] args) throws IOException {
-    	
-        
+
         init();
+        solve();   
         
-        solve();      
-        System.out.println(DP[D] + sum);
-        
+        System.out.println(DP[D] + sum);  
     } // main
 }
