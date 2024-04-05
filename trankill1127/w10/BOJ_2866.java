@@ -5,41 +5,41 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-public class BOJ_2866 {
-
+public class Main {
 	public static void main(String[] args) throws IOException{
 		BufferedReader br =new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 		int r = Integer.parseInt(st.nextToken());
 		int c = Integer.parseInt(st.nextToken());
-		String[] rev = new String[c];
+		String[] ss = new String[r];
 		for (int i=0; i<r; i++) {
-			String s = br.readLine();
-			for (int j=0; j<c; j++) {
-				if (i==0) rev[j]=""+s.charAt(j);
-				else rev[j]+=s.charAt(j);
-			}
+			ss[i] = br.readLine();
 		}
-		
-		if (r==2) {
-			System.out.println(0);
-			return;
-		}
-		
-		for (int i=1; i<r-1; i++) {
-			Set <String> set = new HashSet<>();
-			
-			for (int j=0; j<c; j++) {
-				String key = rev[j].substring(i);
-				
-				if (set.contains(key)) {
-					System.out.println(i-1);
-					return;
+
+		for (int len=1; len<=r; len++) { //길이
+			boolean isSame=false;
+
+			Set<String> set = new HashSet<>();
+			for (int j=0; j<c; j++) { //열
+
+				StringBuilder sb =new StringBuilder();
+				for (int i=r-1; i>=r-len; i--) { //행
+					sb.append(ss[i].charAt(j));
 				}
-				else set.add(key);
+
+				//System.out.println(s);
+				if (set.contains(sb.toString())) {
+					isSame=true;
+					break;
+				}
+
+				set.add(sb.toString());
+			}
+
+			if (!isSame) {
+				System.out.println(r-len);
+				return;
 			}
 		}
-		
-		System.out.println(r-1);
 	}
 }
