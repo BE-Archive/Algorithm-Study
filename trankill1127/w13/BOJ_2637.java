@@ -38,17 +38,26 @@ public class BOJ_2637 {
 		}
 		
 		//n번 부품을 만드는데 필요한 기본 부품의 개수를 조사한다.
-		for (int i=1; i<=n; i++) {
-			
-			for (int j=1; j<=n; j++) {
-				if (origin.contains(j)) continue;
+		int notOriginCnt;
+		do {
+			notOriginCnt=0;
+			for (int i=1; i<=n; i++) {
 				
-				for (int k=1; k<=n; k++) {
-					arr[i][k]+=arr[j][k]*arr[i][j];
+				for (int j=1; j<=n; j++) {
+					if (origin.contains(j)) continue;
+					
+					for (int k=1; k<=n; k++) {
+						arr[i][k]+=arr[j][k]*arr[i][j];
+					}
+					arr[i][j]=0;
 				}
-				arr[i][j]=0;
 			}
-		}
+			
+			for (int i=1; i<=n; i++) {
+				if ( arr[n][i]>0 && !origin.contains(i) ) notOriginCnt++;
+			}
+		} while (notOriginCnt>0); 
+		
 		
 		StringBuilder sb = new StringBuilder();
 		for (int i: origin) {
