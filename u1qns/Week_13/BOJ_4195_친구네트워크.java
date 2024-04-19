@@ -20,7 +20,7 @@ public class BOJ_4195_친구네트워크 {
                 return root[r2]*-1;
         }
 
-        if(r1 > r2)
+        if(root[r1] > root[r2])
         {
             root[r1] += root[r2];
             root[r2] = r1;
