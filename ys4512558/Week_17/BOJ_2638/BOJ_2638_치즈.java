@@ -29,6 +29,7 @@ public class BOJ2638 {
 
         Queue<Pair> queue = new ArrayDeque<>();
         boolean[][] isv = new boolean[N][M];
+        
         //치즈가 아닌 공기에서 수행
         queue.offer(new Pair(0, 0));
         isv[0][0] = true;
