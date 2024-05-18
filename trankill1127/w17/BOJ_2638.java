@@ -30,95 +30,47 @@ public class BOJ_2638 {
             }
         }
 
-        for (int i=0; i<N; i++){
-            for (int j=0; j<M; j++){
-                if (board[i][j]==0){
-                    if (isBlocked(new int[]{i,j})) board[i][j]=-1;
-                }
-            }
-        }
+        airFlow(new int[]{0,0});
 
         Queue<int[]> cheeseFreshDead = new LinkedList<>();
-
         int date=0;
         int todayCheeseCnt=0;
 
         while (!cheeseAlive.isEmpty()){
             date++;
             todayCheeseCnt=cheeseAlive.size();
+
             while (todayCheeseCnt>0){
-
                 int[] target = cheeseAlive.poll();
-
                 int airCnt=0;
+
                 for (int i=0; i<4; i++) {
                     int x=target[0]+direction[i][0];
                     int y=target[1]+direction[i][1];
                     if (x<0||x>=N||y<0||y>=M) continue;
-                    if (board[x][y]==0) airCnt++;
+                    if (board[x][y]==-1) airCnt++;
                 }
 
-                if (airCnt>=2){
-                    cheeseFreshDead.add(target);
-                }
-                else {
-                    cheeseAlive.add(target);
-                }
+                if (airCnt>=2) cheeseFreshDead.add(target);
+                else  cheeseAlive.add(target);
 
                 todayCheeseCnt--;
             }
 
-//            System.out.println("today: "+date);
-//            System.out.println("before");
-//            for (int i=0; i<N; i++){
-//                System.out.println(Arrays.toString(board[i]));
-//            }
-//            System.out.println();
-
-            //치즈를 한번에 모두 녹여준다.
             while (!cheeseFreshDead.isEmpty()){
                 int [] target = cheeseFreshDead.poll();
+                board[target[0]][target[1]]=0;
                 airFlow(target);
             }
-
-//            System.out.println("after");
-//            for (int i=0; i<N; i++){
-//                System.out.println(Arrays.toString(board[i]));
-//            }
-//            System.out.println();
         }
 
         System.out.println(date);
     }
 
-    public static boolean isBlocked(int[] target){
-
-        int cnt=0;
-        for (int i=0; i<4; i++){
-
-            int x= target[0];
-            int y= target[1];
-
-            while (true) {
-                if (x+direction[i][0]<0||x+direction[i][0]>=N
-                        ||y+direction[i][1]<0||y+direction[i][1]>=M) return false;
-                x+=direction[i][0];
-                y+=direction[i][1];
-                if (board[x][y]==1) {
-                    cnt++;
-                    break;
-                }
-            }
-        }
-
-        if (cnt==4) return true;
-        else return false;
-    }
-
     public static void airFlow(int[] target){
         Queue<int[]> q = new LinkedList<>();
+        board[target[0]][target[1]]=-1;
         q.add(target);
-        board[target[0]][target[1]]=0;
 
         while (!q.isEmpty()){
             int[] now = q.poll();
@@ -127,12 +79,14 @@ public class BOJ_2638 {
                 int nextX = now[0]+direction[i][0];
                 int nextY = now[1]+direction[i][1];
 
-                if (nextX<0||nextX>=N||nextY<0||nextY>=M) continue;
-                if (board[nextX][nextY]==1||board[nextX][nextY]==0) continue;
-                board[nextX][nextY]=0;
-                q.add(new int[]{nextX, nextY});
+                if (nextX<0||nextX==N||nextY<0||nextY==M) continue;
+                if (board[nextX][nextY]==1) continue;
+
+                if (board[nextX][nextY]==0) {
+                    board[nextX][nextY]=-1;
+                    q.add(new int[]{nextX, nextY});
+                }
             }
         }
-
     }
 }
