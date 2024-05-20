@@ -1,5 +1,6 @@
 #include <iostream>
 #include <map>
+
 int main()
 {
 	std::ios::sync_with_stdio(false);
