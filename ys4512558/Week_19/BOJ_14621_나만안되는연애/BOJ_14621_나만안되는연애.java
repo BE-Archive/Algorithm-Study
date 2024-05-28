@@ -37,6 +37,7 @@ public class BOJ14621 {
     private static int kruskal(PriorityQueue<Edge> pq) {
         int dist = 0;
         int count = 0;
+        
         UnionFind uf = new UnionFind(N);
 
         while (!pq.isEmpty()) {
