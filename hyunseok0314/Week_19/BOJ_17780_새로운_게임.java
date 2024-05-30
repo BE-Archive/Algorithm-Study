@@ -108,7 +108,6 @@ public class BOJ_17780_새로운_게임 {
                 }
             }
         }
-
         System.out.println(-1);
     }
 }
