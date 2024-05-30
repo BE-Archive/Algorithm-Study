@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-public class BOJ_17780_새로운게임 {
+public class BOJ_17780_새로운게임_Refactor {
     //https://www.acmicpc.net/problem/17780
     //새로운 게임
     static final int WHITE = 0, RED = 1, BLUE = 2;
@@ -51,6 +51,16 @@ public class BOJ_17780_새로운게임 {
         return 5 - d;
     }
 
+    static boolean move(int type, int i, int j, int nextI, int nextJ) {
+        while (!map[i][j].isEmpty()) {
+            Info info = type == WHITE ? map[i][j].pollFirst() : map[i][j].pollLast();
+            info.i = nextI;
+            info.j = nextJ;
+            map[nextI][nextJ].addLast(info);
+        }
+        return map[nextI][nextJ].size() >= 4;
+    }
+
     static int solution() {
         int count = 0;
         while (++count < 1000) {
@@ -62,50 +72,23 @@ public class BOJ_17780_새로운게임 {
                 int nextColor = getColor(nextI, nextJ);
                 switch (nextColor) {
                     case WHITE:
-                        while (!map[nowI][nowJ].isEmpty()) {
-                            Info info = map[nowI][nowJ].pollFirst();
-                            info.i = nextI;
-                            info.j = nextJ;
-                            map[nextI][nextJ].addLast(info);
-                        }
-                        if (map[nextI][nextJ].size() >= 4) return count;
-                        break;
                     case RED:
-                        while (!map[nowI][nowJ].isEmpty()) {
-                            Info info = map[nowI][nowJ].pollLast();
-                            info.i = nextI;
-                            info.j = nextJ;
-                            map[nextI][nextJ].addLast(info);
-                        }
-                        if (map[nextI][nextJ].size() >= 4) return count;
+                        if (move(nextColor, nowI, nowJ, nextI, nextJ)) return count;
                         break;
                     case BLUE:
                         int reverseDirection = getReverseDirection(now.direction);
                         now.direction = reverseDirection;
-                        nextI = nowI +  dx[reverseDirection];
-                        nextJ  = nowJ +  dy[reverseDirection];
+                        nextI = nowI + dx[reverseDirection];
+                        nextJ = nowJ + dy[reverseDirection];
                         nextColor = getColor(nextI, nextJ);
                         switch (nextColor) {
                             case WHITE:
-                                while (!map[nowI][nowJ].isEmpty()) {
-                                    Info info = map[nowI][nowJ].pollFirst();
-                                    info.i = nextI;
-                                    info.j = nextJ;
-                                    map[nextI][nextJ].addLast(info);
-                                }
-                                if (map[nextI][nextJ].size() >= 4) return count;
-                                break;
                             case RED:
-                                while (!map[nowI][nowJ].isEmpty()) {
-                                    Info info = map[nowI][nowJ].pollLast();
-                                    info.i = nextI;
-                                    info.j = nextJ;
-                                    map[nextI][nextJ].addLast(info);
-                                }
-                                if (map[nextI][nextJ].size() >= 4) return count;
+                                if (move(nextColor, nowI, nowJ, nextI, nextJ)) return count;
                                 break;
                         }
                         break;
+
                 }
             }
         }
