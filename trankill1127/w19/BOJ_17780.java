@@ -21,11 +21,12 @@ public class BOJ_17780 {
     public static class Cell implements Comparable<Cell>{
         int x;
         int y;
-        ArrayList<Piece> pieces = new ArrayList<>();
+        ArrayList<Piece> pieces;
 
-        public Cell(int x, int y, int id, int dir) {
+        public Cell(int x, int y, int id, int  dir) {
             this.x = x;
             this.y = y;
+            this.pieces=new ArrayList<>();
             this.pieces.add(new Piece(id, dir));
         }
 
@@ -46,9 +47,11 @@ public class BOJ_17780 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine().trim());
 
-        int n = Integer.parseInt(st.nextToken());
-        int k = Integer.parseInt(st.nextToken());
+        int n = Integer.parseInt(st.nextToken()); //보드 한 변의 길이
+        int k = Integer.parseInt(st.nextToken()); //기물의 개수
 
+        //보드를 입력받는다.
+        //0: 흰      1: 빨      2: 파
         int[][] board = new int[n][n];
         for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine().trim());
@@ -56,41 +59,36 @@ public class BOJ_17780 {
                 board[i][j] = Integer.parseInt(st.nextToken());
             }
         }
-        //0: 흰      1: 빨      2: 파
 
+        //기물의 위치와 방향을 입력받는다.
         LinkedList<Cell> cells = new LinkedList<>();
         for (int i = 1; i <= k; i++) {
             st = new StringTokenizer(br.readLine().trim());
-
-            int x = Integer.parseInt(st.nextToken()) - 1;
-            int y = Integer.parseInt(st.nextToken()) - 1;
-            int d = Integer.parseInt(st.nextToken()) - 1;
-
-            cells.add(new Cell(x, y, i, d));
+            cells.add(
+                    new Cell(Integer.parseInt(st.nextToken()) - 1,
+                            Integer.parseInt(st.nextToken()) -1,
+                            i,
+                            Integer.parseInt(st.nextToken()) - 1));
         }
 
-        int turnCnt = 0;
+        int turnCnt = 0; //몇번째 턴인지
+        Cell curCell = null; //현재 검사할 그룹
+        int[] nextPos = new int[2]; //이동할 위치
 
         outer:
-        while (true) {
-
+        while (turnCnt<=1000) {
             turnCnt++;
-
-            //모든 그룹을 가장 아래에 있는 기물의 id 기준 오름차순으로 정렬한다.
-            Collections.sort(cells);
 
             //모든 그룹을 검사한다.
             for (int i = 0; i < cells.size(); i++) {
+                curCell = cells.get(i);
+                nextPos[0]=curCell.x + dir[curCell.pieces.get(0).direction][0];
+                nextPos[1]=curCell.y + dir[curCell.pieces.get(0).direction][1];
 
-                Cell curCell = cells.get(i);
+                //다음 위치가 파란색 타일인 경우
+                if (nextPos[0] < 0 || nextPos[0] >= n || nextPos[1] < 0 || nextPos[1] >= n || board[nextPos[0]][nextPos[1]] == 2) {
 
-                int[] nextPos = new int[]{
-                        curCell.x + dir[curCell.pieces.get(0).direction][0],
-                        curCell.y + dir[curCell.pieces.get(0).direction][1]
-                };
-
-                if (nextPos[0] < 0 || nextPos[0] >= n || nextPos[1] < 0 || nextPos[1] >= n || board[nextPos[0]][nextPos[1]] == 2) { //파
-
+                    //이동 방향을 바꿔준다.
                     if (curCell.pieces.get(0).direction == 0) {
                         curCell.pieces.get(0).direction = 1;
                     } else if (curCell.pieces.get(0).direction == 1) {
@@ -103,72 +101,75 @@ public class BOJ_17780 {
 
                     nextPos[0] = curCell.x + dir[curCell.pieces.get(0).direction][0];
                     nextPos[1] = curCell.y + dir[curCell.pieces.get(0).direction][1];
-                    if (nextPos[0] < 0 || nextPos[0] >= n || nextPos[1] < 0 || nextPos[1] >= n || board[nextPos[0]][nextPos[1]] == 2) {
-                        continue;
-                    } else {
+                    //방향을 바꾼 후의 다음 위치가 파란색이 아니라면 이동을 해야 하니 다시 한번 그룹을 검사할 수 있게 i를 줄여준다.
+                    if ( !(nextPos[0] < 0 || nextPos[0] >= n || nextPos[1] < 0 || nextPos[1] >= n || board[nextPos[0]][nextPos[1]] == 2) )  {
                         i--;
-                        continue;
                     }
-
                 }
-
-                //이동할 칸의 색상을 확인한다.
-                else if (board[nextPos[0]][nextPos[1]] == 0) { //흰
+                else if (board[nextPos[0]][nextPos[1]] == 0) { //다음 위치가 흰색 타일인 경우
 
                     boolean isThere = false;
                     for (int j = 0; j < cells.size(); j++) {
-                        if (cells.get(j).x == nextPos[0] &&
-                                cells.get(j).y == nextPos[1]) {
-                            isThere = true;
 
+                        //다른 그룹이 이동할 위치에 존재하는지 확인한다.
+                        if (cells.get(j).x == nextPos[0] && cells.get(j).y == nextPos[1]) {
+
+                            //만약 그룹이 합쳐졌을 기물의 개수가 4개 이상이라면 게임을 종료한다.
                             if ((curCell.pieces.size() + cells.get(j).pieces.size()) >= 4) {
                                 break outer;
                             }
 
-                            cells.get(j).pieces.addAll(curCell.pieces);
-                            curCell.pieces.clear();
+                            isThere = true;
+                            cells.get(j).pieces.addAll(curCell.pieces); //그룹을 합친다.
+                            cells.remove(i); //현재 검사 중이던 그룹은 다른 그룹에 흡수되었으니 삭제한다.
+                            i--;
                             break;
                         }
                     }
-                    if (!isThere) {
-                        curCell.x = nextPos[0];
-                        curCell.y = nextPos[1];
+                    if (!isThere) { //이동할 위치에 기물 그룹이 없는 경우
+                        cells.get(i).x = nextPos[0];
+                        cells.get(i).y = nextPos[1];
                     }
 
                 } else if (board[nextPos[0]][nextPos[1]] == 1) { //빨
-
                     boolean isThere = false;
                     for (int j = 0; j < cells.size(); j++) {
-                        if (cells.get(j).x == nextPos[0] &&
-                                cells.get(j).y == nextPos[1]) {
-                            isThere = true;
-
+                        if (cells.get(j).x == nextPos[0] && cells.get(j).y == nextPos[1]) {
                             if ((curCell.pieces.size() + cells.get(j).pieces.size()) >= 4) {
                                 break outer;
                             }
 
-                            for (int cIdx = curCell.pieces.size() - 1; cIdx >= 0; cIdx--) {
-                                cells.get(j).pieces.add(curCell.pieces.get(cIdx));
-                            }
-                            curCell.pieces.clear();
+                            isThere = true;
+                            Collections.reverse(curCell.pieces); //검사 중이던 그룹의 기물 순서를 뒤집어준다.
+                            cells.get(j).pieces.addAll(curCell.pieces); //그룹을 합친다.
+                            cells.remove(i);
+                            i--;
                             break;
                         }
                     }
                     if (!isThere) {
-                        curCell.x = nextPos[0];
-                        curCell.y = nextPos[1];
-                        ArrayList<Piece> reversedPieces = new ArrayList<>(curCell.pieces);
-                        Collections.reverse(reversedPieces);
-                        curCell.pieces = reversedPieces;
+                        int prev = curCell.pieces.get(0).id;
+
+                        cells.get(i).x=nextPos[0];
+                        cells.get(i).y = nextPos[1];
+                        Collections.reverse(curCell.pieces);
+                        cells.get(i).pieces = curCell.pieces;
+
+                        //기물들의 순서를 뒤집으면 가장 아래에 위치한 기물이 바뀌므로 정렬을 수행한다.
+                        Collections.sort(cells);
+
+                        //정렬을 다시 했으니 검사하던 그룹의 맨 아래 기물보다 크지만 차이가 작은 애부터 검사를 이어갈 수 있게 한다.
+                        int j=0;
+                        while (j<cells.size() && cells.get(j).pieces.get(0).id<=prev) {
+                            j++;
+                        }
+                        i=j-1;
                     }
-
                 }
-
             }
-
         }
 
-        System.out.println(turnCnt);
-
+        if (turnCnt>1000) System.out.println(-1);
+        else System.out.println(turnCnt);
     }
 }
