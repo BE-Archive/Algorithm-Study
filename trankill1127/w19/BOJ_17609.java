@@ -88,4 +88,8 @@ public class BOJ_17609 {
             return 2;
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/trankill1127
