@@ -24,3 +24,27 @@ answer += sum(-left[i]*2 for i in range( (M if lastBook == 'left' else 0), len(l
 answer += sum(right[i] * 2 for i in range( (M if lastBook == 'right' else 0), len(right), M))
 
 print(answer)
+
+
+""" 리팩토링!
+N, M = map(int, input().split())
+books = list(map(int, input().split()))
+
+left = list(filter(lambda x : x<0, books))
+left.sort()
+right = list(filter(lambda x : x>0, books))
+right.sort(reverse=True)
+
+
+answer = sum(-left[i]*2 for i in range( 0, len(left), M))
+answer += sum(right[i] * 2 for i in range( 0, len(right), M))
+
+if not left: 
+    answer -= right[0] 
+elif not right or (-left[0] > right[0]): 
+    answer += left[0]
+else:
+    answer -= right[0]
+    
+print(answer)
+"""
