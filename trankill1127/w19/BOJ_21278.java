@@ -47,9 +47,8 @@ public class BOJ_21278 {
             for (int j=i+1; j<=n; j++) { //B
 
                 int len=0;
-                for (int k=1; k<=n; k++){
+                for (int k=1; k<=n; k++)
                     len += Math.min(board[i][k], board[j][k]);
-                }
 
                 if (minLen>len) {
                     l=i; r=j; minLen=len;
