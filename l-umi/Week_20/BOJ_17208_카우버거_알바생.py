@@ -1,23 +1,21 @@
-# 32768KB 5708ms
+# 31120KB 3572ms
+
 import sys
-import copy
 input = sys.stdin.readline
 
 N, M, K = map(int, input().rstrip().split())
 
-current = [[0]*(M+1) for _ in range(K+1)]
-before = copy.deepcopy(current)
+knapsack = [[0] * (M + 1) for _ in range(K + 1)]
+orders = [tuple(map(int, input().split())) for _ in range(N)]
 
-for _ in range(N):
-    o1, o2 = map(int, input().rstrip().split())
-    for i in range(o2, K+1):
-        for j in range(o1, M+1):
+
+for burger, fries in orders:
+    for i in range(K, fries-1, -1):
+        for j in range(M, burger-1, -1):
             # 각 칸을 돌면서
-            current[i][j] = max(before[i][j], before[i-o2][j-o1]+1)
+            knapsack[i][j] = max(knapsack[i][j], knapsack[i-fries][j-burger]+1)
 
-    before = copy.deepcopy(current)
-print(current[K][M])
-
+print(knapsack[K][M])
 
 # ====================================================================
 
@@ -53,26 +51,23 @@ print(current[K][M])
 
 # ====================================================================
 
-# 2번. 냅색O 공간효율을 위해 deepCopy이용 32,700KB 7,404ms
+# 2번. 냅색O 공간효율을 위해 deepCopy이용 32,768KB 5,708ms
 
 # import sys
 # import copy
 # input = sys.stdin.readline
-
+# 
 # N, M, K = map(int, input().rstrip().split())
-
+# 
 # current = [[0]*(M+1) for _ in range(K+1)]
 # before = copy.deepcopy(current)
-
+# 
 # for _ in range(N):
-#     order = tuple(map(int, input().rstrip().split()))
-#     for i in range(K+1):
-#         for j in range(M+1):
+#     o1, o2 = map(int, input().rstrip().split())
+#     for i in range(o2, K+1):
+#         for j in range(o1, M+1):
 #             # 각 칸을 돌면서
-#             if order[0] <= j and order[1] <= i :
-#                 current[i][j] = max(before[i][j], before[i-order[1]][j-order[0]]+1)
-#             else :
-#                 current[i][j] = before[i][j]
+#             current[i][j] = max(before[i][j], before[i-o2][j-o1]+1)
 #     before = copy.deepcopy(current)
 # print(current[K][M])
 
