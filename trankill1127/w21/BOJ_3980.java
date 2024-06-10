@@ -6,12 +6,14 @@ import java.util.StringTokenizer;
 public class BOJ_3980 {
 
     static int[][] board = new int[11][11];
+    static boolean[] position = new boolean[11];
     public static int maxTotScore=0;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = null;
         StringBuilder sb = new StringBuilder();
+
         int c = Integer.parseInt(br.readLine());
         while (c>0){
             for (int i=0; i<11; i++) {
@@ -22,14 +24,15 @@ public class BOJ_3980 {
                 }
             }
             maxTotScore=0;
-            recursive(0,0, new boolean[11]);
+            position = new boolean[11];
+            recursive(0,0);
             sb.append(maxTotScore).append("\n");
             c--;
         }
         System.out.println(sb.toString());
     }
 
-    public static void recursive(int player, int totScore, boolean[] position){
+    public static void recursive(int player, int totScore){
         if (player==11){
             maxTotScore = Math.max(maxTotScore, totScore);
             return;
@@ -38,7 +41,7 @@ public class BOJ_3980 {
         for (int pos=0; pos<11; pos++){
             if (position[pos] || board[player][pos]==0) continue;
             position[pos]=true;
-            recursive(player+1, totScore+board[player][pos], position);
+            recursive(player+1, totScore+board[player][pos]);
             position[pos]=false;
         }
 
