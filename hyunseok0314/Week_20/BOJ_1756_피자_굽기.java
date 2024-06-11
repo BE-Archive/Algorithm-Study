@@ -13,12 +13,12 @@ public class BOJ_1756_피자_굽기 {
         D = Integer.parseInt(st.nextToken());
         N = Integer.parseInt(st.nextToken());
 
-        oven = new int[D + 1];
+        oven = new int[D];
         dough = new int[N];
 
         int min = Integer.MAX_VALUE;
         st = new StringTokenizer(br.readLine());
-        for (int i = 1; i <= D; i++) {
+        for (int i = 0; i < D; i++) {
             min = Math.min(min, Integer.parseInt(st.nextToken()));
             oven[i] = min;
         }
