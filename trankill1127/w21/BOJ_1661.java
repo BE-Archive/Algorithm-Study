@@ -12,7 +12,6 @@ public class BOJ_1661 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine().trim());
-
         int n = Integer.parseInt(st.nextToken());
         double p = Integer.parseInt(st.nextToken());
         for (int i=0; i<n; i++){
