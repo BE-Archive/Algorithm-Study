@@ -23,7 +23,7 @@ public class BOJ_10711_모래성 {
             {
                 char ch = line.charAt(j);
                 if (ch == '.') q.offer(new int[]{i, j});
-                else grid[i][j] = Character.getNumericValue(ch);
+                else grid[i][j] = Character.getNumericValue(ch); // ch-'0';
             }
         }
 
@@ -42,7 +42,6 @@ public class BOJ_10711_모래성 {
                     int y = front[1] + dy[d];
 
                     if((x<0 || y<0 || x>=H || y>=W)|| grid[x][y] == 0) continue;
-
                     if(--grid[x][y] == 0)
                         q.offer(new int[]{x, y});
                 }
