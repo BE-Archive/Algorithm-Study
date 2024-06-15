@@ -2,12 +2,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
-import java.util.Objects;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class BOJ_10711 {
 
+    public static int[][] land;
     public static int[][] direction = {
             {-1,-1}, {-1,0}, {-1,1},
             {0,-1}, {0,1},
@@ -18,58 +18,70 @@ public class BOJ_10711 {
         StringTokenizer st = new StringTokenizer(br.readLine().trim());
         int h = Integer.parseInt(st.nextToken());
         int w = Integer.parseInt(st.nextToken());
-        int[][] land = new int[h][w];
+        land = new int[h][w];
 
-        Queue<int[]> all = new LinkedList<>();
         for (int i=0; i<h; i++){
             char[] input = br.readLine().toCharArray();
             for (int j=0; j<w; j++){
-
                 if (input[j]=='.') land[i][j]=0;
-                else {
-                    land[i][j]= input[j]-'0';
-                    all.add(new int[]{i,j});
-                }
+                else land[i][j]= input[j]-'0';
             }
         }
 
+        Queue<int[]> q = new LinkedList<>();
+        for (int i=1; i<h-1; i++){
+            for (int j=1; j<w-1; j++){
+                if (countEmpty(i,j)>=land[i][j]) {
+                    q.add(new int[]{i,j});
+                }
+
+            }
+        }
+
+        boolean[][] visited = new boolean[h][w];
         int waveCnt=0;
-        Queue<int[]> bye = new LinkedList<>();
-        while (true){
-            int size=all.size();
+        while (!q.isEmpty()){
+
+            int size=q.size();
             while (size>0){
 
-                int[] now = all.poll();
-                int emptyCnt=0;
+                int[] now = q.poll();
+                land[now[0]][now[1]]=0;
 
-                for (int i=0; i<8; i++){
+                for (int d=0; d<8; d++){
                     int[] next = new int[]{
-                            now[0]+direction[i][0],
-                            now[1]+direction[i][1]
+                            now[0]+direction[d][0],
+                            now[1]+direction[d][1]
                     };
-                    if (land[next[0]][next[1]]==0) emptyCnt++;
-                }
-                if (emptyCnt>=land[now[0]][now[1]]) {
-                    bye.add(now);
-                }
-                else {
-                    all.add(now);
+                    if (land[next[0]][next[1]]==0) continue;
+                    if (visited[next[0]][next[1]]) continue;
+
+                    if (countEmpty(next[0],next[1])>=land[next[0]][next[1]]) {
+                        visited[next[0]][next[1]]=true;
+                        q.add(next);
+                    }
                 }
 
                 size--;
             }
-            if (bye.isEmpty()){
-                break;
-            }
-            else {
-                waveCnt++;
-                while (!bye.isEmpty()){
-                    int[] now = bye.poll();
-                    land[now[0]][now[1]]=0;
-                }
-            }
+
+            waveCnt++;
         }
 
         System.out.println(waveCnt);
     }
+
+    public static int countEmpty(int x, int y){
+        int emptyCnt=0;
+        for (int d=0; d<8; d++){
+            int[] next = new int[]{
+                    x+direction[d][0],
+                    y+direction[d][1]
+            };
+            if (land[next[0]][next[1]]==0) emptyCnt++;
+        }
+        return emptyCnt;
+    }
+
 }
+
