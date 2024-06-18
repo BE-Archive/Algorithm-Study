@@ -30,7 +30,6 @@ public class BOJ_2531 {
             //삭제
             if (map.get(belt[i])==1) map.remove(belt[i]);
             else if (map.get(belt[i])>1) map.put(belt[i], map.get(belt[i])-1);
-
             //추가
             int addIdx=(i+k)%n;
             if (map.get(belt[addIdx])==null) map.put(belt[addIdx], 1);
@@ -38,7 +37,6 @@ public class BOJ_2531 {
 
             diversity=map.size();
             if (map.get(c)==null) diversity++;
-
             if (diversity>maxDiversity) maxDiversity=diversity;
         }
 
