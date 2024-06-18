@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Main {
+public class BOJ_14500 {
 	
 	static int[][] kind = {
 			{0,0}, {0,1}, {0,2}, {0,3},

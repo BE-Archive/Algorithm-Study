@@ -17,28 +17,48 @@ public class BOJ_1461 {
         ArrayList<Integer> plus = new ArrayList<>();
 
         st = new StringTokenizer(br.readLine().trim());
-        int input;
-        for (int i=0; i<n; i++){
-            input = Integer.parseInt(st.nextToken());
-            if (input<0) minus.add(input);
+        for (int i=0; i<n; i++) {
+            int input = Integer.parseInt(st.nextToken());
+            if (input<0) minus.add(-1*input);
             else plus.add(input);
         }
 
-        Collections.sort(minus); //-39 -37 -29 -28 -6
-        Collections.sort(plus); //2 11
+        Collections.sort(minus);
+        Collections.sort(plus);
 
-        int tot=0;
-        ArrayList<Integer> std = new ArrayList<>();
-        for (int i=0; i<minus.size(); i+=m){
-            std.add(Math.abs(minus.get(i))); //-39 -29 -6
-            tot+=Math.abs(minus.get(i)*2);
+        int minusIdx=minus.size()-1;
+        int plusIdx=plus.size()-1;
+        int steps=0;
+        if (minusIdx>=0 && plusIdx>=0){
+            if (minus.get(minusIdx)>plus.get(plusIdx)) {
+                steps+=minus.get(minusIdx);
+                minusIdx-=m;
+            }
+            else {
+                steps+=plus.get(plusIdx);
+                plusIdx-=m;
+            }
         }
-        for (int i=plus.size()-1; i>=0; i-=m){
-            std.add(plus.get(i)); //11
-            tot+=plus.get(i)*2;
+        else {
+            if (plusIdx>=0) {
+                steps+=plus.get(plusIdx);
+                plusIdx-=m;
+            }
+            else {
+                steps+=minus.get(minusIdx);
+                minusIdx-=m;
+            }
         }
-        Collections.sort(std);
 
-        System.out.println(tot-std.get(std.size()-1));
+        while (minusIdx>=0){
+            steps+=minus.get(minusIdx)*2;
+            minusIdx-=m;
+        }
+        while (plusIdx>=0){
+            steps+=plus.get(plusIdx)*2;
+            plusIdx-=m;
+        }
+
+        System.out.println(steps);
     }
 }
