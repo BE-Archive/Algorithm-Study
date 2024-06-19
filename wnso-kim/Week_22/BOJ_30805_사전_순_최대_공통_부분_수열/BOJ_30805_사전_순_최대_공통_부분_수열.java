@@ -1,83 +1,74 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class BOJ_30805_사전_순_최대_공통_부분_수열 {
 
     static int N,M;
-    static int answer = -1;
-    static int[][] MAP;
-    static int[][] se = new int[2][2];
+    static List<List<Integer>> first = new ArrayList<List<Integer>>();
+    static List<List<Integer>> second = new ArrayList<List<Integer>>();
+    static List<Integer> result = new ArrayList<>();
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        
+
+        for(int i=0; i<=100; i++){
+            first.add(new ArrayList<>());
+            second.add(new ArrayList<>());
+        }
+
+        N = Integer.parseInt(br.readLine());
         StringTokenizer stk = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(stk.nextToken());
-        M = Integer.parseInt(stk.nextToken());        
+        for(int i=0; i<N; i++){
+            int number = Integer.parseInt(stk.nextToken());
+            first.get(number).add(i);
+        }
 
+        M = Integer.parseInt(br.readLine());
         stk = new StringTokenizer(br.readLine());
-        for(int i=0; i<2; i++){
-            se[i][0] = Integer.parseInt(stk.nextToken());        
-            se[i][1] = Integer.parseInt(stk.nextToken());        
+        for(int i=0; i<M; i++){
+            int number = Integer.parseInt(stk.nextToken());
+            second.get(number).add(i);
         }
 
-        MAP = new int[N+2][M+2];
-        for(int i=0; i<=N+1; i++){Arrays.fill(MAP[i], -1);}
+        f(-1, -1);
 
-        for(int i=1; i<=N; i++){
-            stk = new StringTokenizer(br.readLine());
-            for(int j=1; j<=M; j++){
-                MAP[i][j] = Integer.parseInt(stk.nextToken());
-            }
+        System.out.println(result.size());
+
+        for(int number: result){
+            System.out.print(number + " ");
         }
 
-        dijkstra();
+        System.out.println();
+    }  
+    
+    static void f(int left, int right){
+        int a = -1, b = -1;
 
-        System.out.println(answer);
-    }
+        for(int i=100; i>0; i--){
+            a = -1; b = -1;
 
-    static void dijkstra(){
-        Queue<int[]> queue = new PriorityQueue<>((q1, q2) -> (q1[2] - q2[2]));
-        int[][][] cost = new int[3][N+2][M+2];
-        for(int i=0; i<3; i++){
-            for(int j=0; j<=N+1; j++){
-                Arrays.fill(cost[i][j], Integer.MAX_VALUE);
-            }
-        }
-
-        queue.add(new int[]{se[0][0], se[0][1], 0, 1});
-
-        while(!queue.isEmpty()){
-            int[] now = queue.poll();
-
-            int step = now[3]%3;
-            int len = dr[step].length;
-            
-            for(int i=0; i<len; i++){
-                int r = now[0] + dr[step][i];
-                int c = now[1] + dc[step][i];
-                int weight = now[2]+MAP[r][c];
-
-                if(r == se[1][0] && c == se[1][1]) {
-                    answer = weight;
-                    return;
+            for(int index: first.get(i)) {
+                if(index > left){
+                    a = index;
+                    break;
                 }
+            }
 
-                if(MAP[r][c] == -1) continue;
-
-                if(cost[step][r][c] > weight){
-                    cost[step][r][c] = weight;
-                    queue.add(new int[]{r, c, weight, now[3]+1});
+            for(int index: second.get(i)) {
+                if(index > right){
+                    b = index;  
+                    break;
                 }
+            }
 
+            if(a != -1 && b != -1){
+                result.add(i);
+                f(a,b);
+                return;
             }
         }
     }
-
-    static int[][] dr = {{0,0,1,-1}, {-1,1}, {0,0}};
-    static int[][] dc = {{1,-1,0,0}, {0,0}, {-1,1}};
 }
