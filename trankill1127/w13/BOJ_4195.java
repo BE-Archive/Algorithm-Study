@@ -7,6 +7,9 @@ import java.util.StringTokenizer;
 
 public class BOJ_4195 {
 
+    public static HashMap<String, Integer> names = new HashMap<>();
+    public static int[] parent;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
@@ -45,9 +48,6 @@ public class BOJ_4195 {
         System.out.println(sb.toString());
     }
 
-    public static HashMap<String, Integer> names = new HashMap<>();
-    public static int[] parent;
-
     public static int find(int x){
         if (parent[x]<0) return x;
         return parent[x] = find(parent[x]);
@@ -69,4 +69,5 @@ public class BOJ_4195 {
             return p2;
         }
     }
+
 }
