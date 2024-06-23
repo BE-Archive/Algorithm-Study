@@ -33,9 +33,10 @@ public class Main {
 
                 int milk = land[i][j];
                 int befMilk = (milk + 2) % 3;
-                if (milk == 0 || dp[i][j][befMilk] != 0) {
+                if (dp[i][j][befMilk] != 0) 
                     dp[i][j][milk] = Math.max(dp[i][j][milk], dp[i][j][befMilk] + 1);
-                }
+                else if (milk == 0) 
+                    dp[i][j][milk] = Math.max(dp[i][j][milk], dp[i][j][befMilk] + 1);
             }
         }
 
