@@ -10,53 +10,30 @@ public class BOJ_14722 {
         int n = Integer.parseInt(br.readLine().trim());
 
         StringTokenizer st = null;
-        int[][] land = new int[n][n];
-        for (int i=0; i<n; i++){
+        int[][] land = new int[n+1][n+1];
+        for (int i=1; i<n+1; i++){
             st = new StringTokenizer(br.readLine().trim());
-            for (int j=0; j<n; j++){
+            for (int j=1; j<n+1; j++){
                 land[i][j]=Integer.parseInt(st.nextToken());
             }
         }
 
-        int[][][] dp = new int[n][n][3];
-        if (land[0][0] == 0) {
-            dp[0][0][0] = 1;
-        }
+        int[][][] dp = new int[n+1][n+1][3];
+        if (land[1][1]==0) dp[1][1][0]=1;
 
-        // 첫 번째 행 초기화
-        for (int i = 1; i < n; i++) {
-            int now=land[0][i];
-            dp[0][i][0] = (now == 0) ? dp[0][i - 1][2] + 1 : dp[0][i - 1][0];
-            dp[0][i][1] = (now == 1 && dp[0][i][0] > dp[0][i][2]) ? dp[0][i - 1][0] + 1 : dp[0][i - 1][1];
-            dp[0][i][2] = (now == 2 && dp[0][i][1] > dp[0][i][0]) ? dp[0][i - 1][1] + 1 : dp[0][i - 1][2];
-        }
-        // 첫 번째 열 초기화
-        for (int i = 1; i < n; i++) {
-            int now=land[i][0];
-            dp[i][0][0] = (now == 0) ? dp[i - 1][0][2] + 1 : dp[i - 1][0][0];
-            dp[i][0][1] = (now == 1 && dp[i][0][0] > dp[i][0][2]) ? dp[i - 1][0][0] + 1 : dp[i - 1][0][1];
-            dp[i][0][2] = (now == 2 && dp[i][0][1] > dp[i][0][0]) ? dp[i - 1][0][1] + 1 : dp[i - 1][0][2];
-        }
+        for (int i=1; i<=n; i++){
+            for (int j=1; j<=n; j++){
 
-        for (int i=1; i<n; i++) {
-            for (int j=1; j<n; j++) {
-                int now=land[i][j];
+                for (int k=0; k<3; k++){
+                    dp[i][j][k]=Math.max(dp[i-1][j][k], dp[i][j-1][k]);
+                }
 
-                dp[i][j][0] = (now==0)
-                        ? Math.max(dp[i][j-1][2]+1, dp[i-1][j][2]+1)
-                        : Math.max(dp[i][j-1][0], dp[i-1][j][0]);
-
-                dp[i][j][1] = (now==1 && dp[i][j][0] > dp[i][j][2])
-                        ? Math.max(dp[i][j-1][0]+1, dp[i-1][j][0]+1)
-                        : Math.max(dp[i][j-1][1], dp[i-1][j][1]);
-
-                dp[i][j][2] = (now==2 && dp[i][j][1] > dp[i][j][0])
-                        ? Math.max(dp[i][j-1][1]+1, dp[i-1][j][1]+1)
-                        : Math.max(dp[i][j-1][2], dp[i-1][j][2]);
+                int milk = land[i][j];
+                if (milk==0) dp[i][j][milk]=Math.max(dp[i][j][milk], dp[i][j][2]+1);
+                else if(dp[i][j][milk - 1] != 0) dp[i][j][milk]=Math.max(dp[i][j][milk], dp[i][j][milk-1]+1);
             }
         }
 
-        int result = Math.max(dp[n-1][n-1][0], Math.max(dp[n-1][n-1][1], dp[n-1][n-1][2]));
-        System.out.println(result);
+        System.out.println(Math.max(dp[n][n][0], Math.max(dp[n][n][1], dp[n][n][2])));
     }
 }
