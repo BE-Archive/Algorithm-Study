@@ -36,16 +36,14 @@ int main()
             tmp += T[s];
             map[tmp].push_back(i);
 
-            if(map[tmp].size() > 1 && max_length < tmp.length())
-            {
-                max_length = tmp.length();
-            }
+            if(map[tmp].size() > 1 )
+                max_length = std::max(max_length, tmp.length());
         }
     }
 
     for(const auto& [key, value] : map)
     {
-        if(value.size() >=2 && key.length() == max_length)
+        if((value.size() > 1) && (key.length() == max_length))
         {
             if(value[0] < max_prefix_order)
             {
