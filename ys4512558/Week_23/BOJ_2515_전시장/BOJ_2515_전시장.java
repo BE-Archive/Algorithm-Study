@@ -48,6 +48,7 @@ public class BOJ2179 {
             dp[picture.h] += picture.c;
             max = Math.max(max, dp[picture.h]);
         }
+        
         System.out.println(max);
     }
 }
