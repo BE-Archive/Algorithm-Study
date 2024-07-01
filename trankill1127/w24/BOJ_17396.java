@@ -19,6 +19,7 @@ public class BOJ_17396 {
             return (int)(this.time-o.time);
         }
     }
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine().trim());
@@ -54,7 +55,7 @@ public class BOJ_17396 {
         times[0]=0;
         while (!pq.isEmpty()){
             Node now = pq.poll();
-            if (now.id==n-1) continue;
+            if (now.time>times[n-1]) continue;
             if (now.time>times[now.id]) continue;
 
             for (Node next: graph.get(now.id)){
