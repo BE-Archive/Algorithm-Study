@@ -1,64 +1,94 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
 
 public class BOJ_14621 {
 
-    public static boolean[] visited;
+    //17504 KB, 184ms
+    public static class Edge implements Comparable<Edge>{
+        int s;
+        int e;
+        int w;
+
+        public Edge(int s, int e, int w) {
+            this.s = s;
+            this.e = e;
+            this.w = w;
+        }
+
+        @Override
+        public int compareTo(Edge o) {
+            return this.w-o.w;
+        }
+    }
+
+    public static int n, m;
+    public static boolean[] gender;
+    public static PriorityQueue<Edge> pq;
+    public static int[] parent;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine().trim());
-        int n = Integer.parseInt(st.nextToken()); //정점 개수
-        int m = Integer.parseInt(st.nextToken()); //도로 개수
 
-        int[] gender = new int[n+1];
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+
+        gender=new boolean[n+1];
         st = new StringTokenizer(br.readLine().trim());
-        for (int i=1; i<=n; i++) {
-            if (st.nextToken().equals("W")) gender[i]=0;
-            else gender[i]=1;
+        for (int i=1; i<=n; i++){
+            gender[i]=( st.nextToken().equals("M")? false : true );
         }
 
-        LinkedList<int[]>[] graph = new LinkedList[n+1];
-        for (int i=1; i<=n; i++){
-            graph[i]=new LinkedList<>();
-        }
+        pq = new PriorityQueue<>();
         for (int i=0; i<m; i++){
             st = new StringTokenizer(br.readLine().trim());
-            int v1=Integer.parseInt(st.nextToken());
-            int v2=Integer.parseInt(st.nextToken());
-            int w=Integer.parseInt(st.nextToken());
-            if (gender[v1]==gender[v2]) continue;
-            graph[v1].add(new int[]{v2,w});
-            graph[v2].add(new int[]{v1,w});
-        }
-        Comparator<int[]> comparator = new Comparator<int[]>() {
-            @Override
-            public int compare(int[] o1, int[] o2) {
-                return o1[1]-o2[1];
-            }
-        };
-        PriorityQueue<int[]> pq = new PriorityQueue<>(comparator);
-        visited = new boolean[n+1];
-        pq.add(new int[]{1,0});
+            int s = Integer.parseInt(st.nextToken());
+            int e = Integer.parseInt(st.nextToken());
+            int w = Integer.parseInt(st.nextToken());
 
-        int verCnt=0;
+            if (gender[s]==gender[e]) continue;
+            pq.add(new Edge(s,e,w));
+        }
+
+        System.out.println(kruskal());
+    }
+
+    public static int kruskal(){
         int totW=0;
+        int edgeCnt=0;
+
+        parent = new int[n+1];
+        for (int i=1; i<=n; i++) parent[i]=i;
+
         while (!pq.isEmpty()){
-            int[] now = pq.poll();
-            if (visited[now[0]]) continue;
-            visited[now[0]]=true;
-            verCnt++;
-            totW+=now[1];
-            if (verCnt==n) break;
-
-            for (int[] next: graph[now[0]]){
-                if (visited[next[0]]) continue;
-                pq.add(next);
-            }
+            Edge now = pq.poll();
+            if (find(now.s)==find(now.e)) continue;
+            union(now.s, now.e);
+            edgeCnt++;
+            totW += now.w;
         }
+        return (edgeCnt==n-1) ? totW : -1;
+    }
 
-        if (totW==0) totW=-1;
-        System.out.println(totW);
+    public static void union(int s, int e){
+        int sP = find(s);
+        int eP = find(e);
+
+        if (sP==eP) return;
+
+        if (sP<eP){
+            parent[eP]=sP;
+        }
+        else {
+            parent[sP]=eP;
+        }
+    }
+
+    public static int find(int v){
+        if (parent[v]==v) return v;
+        return parent[v]=find(parent[v]);
     }
 }
