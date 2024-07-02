@@ -52,19 +52,10 @@ public class BOJ_17780 {
 
         //보드를 입력받는다.
         //0: 흰      1: 빨      2: 파
-        int[][] board = new int[n+2][n+2];
-
-        // 체스말 위치 입력받을 때 1~n을 사용하기도 하고
-        // 체스판 바깥도 파란색 칸인 것처럼 한다고 했으니
-        //체스판을 파란색 칸으로 둘러준다.
-        for (int i=0; i<n+2; i++){
-            board[i][0]=2; board[i][n+1]=2;
-            board[0][i]=2; board[n+1][i]=2;
-        }
-
-        for (int i = 1; i <= n; i++) {
+        int[][] board = new int[n][n];
+        for (int i = 0; i < n; i++) {
             st = new StringTokenizer(br.readLine().trim());
-            for (int j = 1; j <= n; j++) {
+            for (int j = 0; j < n; j++) {
                 board[i][j] = Integer.parseInt(st.nextToken());
             }
         }
@@ -74,8 +65,8 @@ public class BOJ_17780 {
         for (int i = 1; i <= k; i++) {
             st = new StringTokenizer(br.readLine().trim());
             cells.add(
-                    new Cell(Integer.parseInt(st.nextToken()),
-                            Integer.parseInt(st.nextToken()),
+                    new Cell(Integer.parseInt(st.nextToken()) - 1,
+                            Integer.parseInt(st.nextToken()) -1,
                             i,
                             Integer.parseInt(st.nextToken()) - 1));
         }
