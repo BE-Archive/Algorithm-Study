@@ -1,5 +1,5 @@
 # 👩🏻‍💻 Algorithm-Study
-> SWAE A,B 형 취득을 위한 알고리즘 스터디입니다.
+> SWEA A,B,C 형 취득을 위한 알고리즘 스터디입니다.
 
 <br/>
 
@@ -18,11 +18,11 @@
   </tr>
   <tr>
     <td>언어</td>
-    <td>JAVA, C++, Python
+    <td>JAVA, C++, C, Python, Javascript
   </tr>
   <tr>
     <td>플랫폼</td>
-    <td>SWAE, 백준, 프로그래머스</td>
+    <td>SWEA, 백준, 프로그래머스</td>
   </tr>
 </table>
 
@@ -34,54 +34,68 @@
     <td align="center"><a href="https://github.com/wnso-kim"><img src="https://avatars.githubusercontent.com/wnso-kim" width="130px;""></a></td>
     <td align="center"><a href="https://github.com/trankill1127"><img src="https://avatars.githubusercontent.com/trankill1127" width="130px;""></a></td>
     <td align="center"><a href="https://github.com/seoyoung059"><img src="https://avatars.githubusercontent.com/seoyoung059" width="130px;""></a></td>
-    <td align="center"><a href="https://github.com/sickbirdd"><img src="https://avatars.githubusercontent.com/sickbirdd" width="130px;""></a></td>
     <td align="center"><a href="https://github.com/u1qns"><img src="https://avatars.githubusercontent.com/u1qns" width="130px;""></a></td>
-    <td align="center"><a href="https://github.com/violetadieu"><img src="https://avatars.githubusercontent.com/violetadieu" width="130px;""></a></td>
+    <td align="center"><a href="https://github.com/ys4512558"><img src="https://avatars.githubusercontent.com/ys4512558" width="130px;""></a></td>
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/wnso-kim"><b>wnso-kim</b></a></td>
     <td align="center"><a href="https://github.com/trankill1127"><b>trankill1127</b></a></td>
     <td align="center"><a href="https://github.com/seoyoung059"><b>seoyoung059</b></a></td>
-    <td align="center"><a href="https://github.com/sickbirdd"><b>sickbirdd</b></a></td>
     <td align="center"><a href="https://github.com/u1qns"><b>u1qns</b></a></td>
-    <td align="center"><a href="https://github.com/violetadieu"><b>violetadieu</b></a></td>
+    <td align="center"><a href="https://github.com/ys4512558"><b>ys4512558</b></a></td>
   </tr>
   <tr> 
     <td align="center"><img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white"></td>
     <td align="center"><img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white"><br/><img src="https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white"></td>
     <td align="center"><img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white"></td>
     <td align="center"><img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white"><br/><img src="https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white"></td>
-    <td align="center"><img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white"><br/><img src="https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white"></td>
-    <td align="center"><img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54"><br/><img src="https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white"></td>
+    <td align="center"><img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white"></td>
   </tr>
 
   
    <tr>
-    <td align="center"><a href="https://github.com/ys4512558"><img src="https://avatars.githubusercontent.com/ys4512558" width="130px;""></a></td>
     <td align="center"><a href="https://github.com/sjhlko"><img src="https://avatars.githubusercontent.com/sjhlko" width="130px;""></a></td>
     <td align="center"><a href="https://github.com/yunva17"><img src="https://avatars.githubusercontent.com/yunva17" width="130px;""></a></td>
     <td align="center"><a href="https://github.com/l-umi"><img src="https://avatars.githubusercontent.com/l-umi" width="130px;""></a></td>
     <td align="center"><a href="https://github.com/ezeun"><img src="https://avatars.githubusercontent.com/ezeun" width="130px;""></a></td>
-    <td align="center"><a href="https://github.com/Aiden-Jung"><img src="https://avatars.githubusercontent.com/Aiden-Jung" width="130px;""></a></td>
+    <td align="center"><a href="https://github.com/violetadieu"><img src="https://avatars.githubusercontent.com/violetadieu" width="130px;""></a></td>
   </tr>
   <tr>
-    <td align="center"><a href="https://github.com/ys4512558"><b>ys4512558</b></a></td>
     <td align="center"><a href="https://github.com/sjhlko"><b>sjhlko</b></a></td>
     <td align="center"><a href="https://github.com/yunva17"><b>yunva17</b></a></td>
     <td align="center"><a href="https://github.com/l-umi"><b>l-umi</b></a></td>
     <td align="center"><a href="https://github.com/ezeun"><b>ezeun</b></a></td>
-    <td align="center"><a href="https://github.com/Aiden-Jung"><b>Aiden-Jung</b></a></td>
+    <td align="center"><a href="https://github.com/violetadieu"><b>violetadieu</b></a></td>
   </tr>
   <tr>
-    <td align="center"><img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white"></td>
     <td align="center"><img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white"></td>
     <td align="center"><img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white"><br/><img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"></td>
     <td align="center"><img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54"></td>
     <td align="center"><img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white"><br/><img src="https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white"></td>
-    <td align="center"><img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white"><br/><img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54"></td>
-    
+    <td align="center"><img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54"><br/><img src="https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white"></td>
   </tr>
 </table>
+<br/>
+
+## 🥳 C형 도전 멤버
+<table>
+ <tr>
+    <td align="center"><a href="https://github.com/sickbirdd"><img src="https://avatars.githubusercontent.com/sickbirdd" width="130px;""></a></td>
+    <td align="center"><a href="https://github.com/Aiden-Jung"><img src="https://avatars.githubusercontent.com/Aiden-Jung" width="130px;""></a></td>
+    <td align="center"><a href="https://github.com/AnOldStory"><img src="https://avatars.githubusercontent.com/AnOldStory" width="130px;""></a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/sickbirdd"><b>sickbirdd</b></a></td>
+    <td align="center"><a href="https://github.com/Aiden-Jung"><b>Aiden-Jung</b></a></td>
+    <td align="center"><a href="https://github.com/AnOldStory"><b>AnOldStory</b></a></td>
+  </tr>
+  <tr> 
+    <td align="center"><img src="https://img.shields.io/badge/C-A8B9CC?style=flat-square&logo=C&logoColor=white"><br/><img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white"><br/><img src="https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white"></td>
+    <td align="center"><img src="https://img.shields.io/badge/C-A8B9CC?style=flat-square&logo=C&logoColor=white"><br/><img src="https://img.shields.io/badge/Java-007396?style=for-the-badge&logo=java&logoColor=white"><br/><img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54"></td>
+    <td align="center"><img src="https://img.shields.io/badge/C-A8B9CC?style=flat-square&logo=C&logoColor=white"><br/><img src="https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white"></td>
+  </tr>
+</table>
+
 <br/>
 
 ## 📌 스터디 규칙
