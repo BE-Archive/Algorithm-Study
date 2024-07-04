@@ -1,0 +1,200 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.*;
+ 
+public class Solution {
+ 
+    public static class Point { //좌표
+        int x, y;
+        Point(int x, int y){
+            this.x=x;
+            this.y=y;
+        }
+    }
+ 
+    public static class Person implements Comparable<Person>{ //인간
+        int leftTime; //앞으로 더 가야하는 시간
+        int dest; //목적 계단
+        boolean isArrived; //계단에 도착했는지
+        boolean isNextLv; //아래층에 도착했는지
+ 
+        Person(int t, int d){ 
+            leftTime=t;
+            dest=d;
+            isArrived=false;
+            isNextLv=false;
+        }
+ 
+        public String toString() {
+            return "lefTime="+leftTime+" dest="+dest+" : isArrived="+isArrived+" isNextLv="+isNextLv;
+        }
+ 
+        @Override
+        public int compareTo(Person o) {
+            return o.leftTime-this.leftTime;
+        }
+    }
+ 
+    public static class Stair { //계단
+        Point pos; //위치
+        int pplCnt; //내려가고 있는 인원
+        int len; //길이
+ 
+        Stair(int x, int y, int p, int l){
+            pos = new Point(x,y); 
+            pplCnt=p; 
+            len=l;
+        }
+ 
+        public String toString() {
+            return pos.x+" "+pos.y+" : pplCnt="+pplCnt+" len="+len;
+        }
+    }
+ 
+    public static List<Point> pplPos;
+ 
+    public static void main(String[] args) throws IOException{
+ 
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+ 
+        int t = Integer.parseInt(br.readLine());
+        for (int tc=1; tc<=t; tc++) {
+ 
+            int n =Integer.parseInt(br.readLine());
+ 
+            pplPos = new ArrayList<>(); //인간 좌표
+            stair = new ArrayList<>(); //계단 좌표
+ 
+            int[][] area = new int[n][n];
+            for (int i=0; i<n; i++) {
+                StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+                for (int j=0; j<n; j++) {
+                    area[i][j]=Integer.parseInt(st.nextToken());
+                    if (area[i][j]==1) pplPos.add(new Point(i,j));
+                    if (area[i][j]>1) stair.add(new Stair(i,j, 0, area[i][j]));
+                }
+            }
+ 
+            stairChoice = new ArrayList<>(); //인간이 어떤 계단을 내려가는지에 대한 모든 조합
+            tmpStairChoice = new int[pplPos.size()]; 
+            powerSet(0); //모든 조합을 구합니다.
+ 
+            int usedTime=Integer.MAX_VALUE; 
+            for (int i=0; i<stairChoice.size(); i++){ //모든 조합 각각의 경우를 검사해봅시다.
+                ppl = new ArrayList<>(); //사람 정보를 싹 다 저장한다.(목적 계단, 가야하는 거리 계산 등)
+                int[] tmp = stairChoice.get(i);
+ 
+                for (int j=0; j<pplPos.size(); j++) {
+                    if (tmp[j]==0){ //1번 계단
+                        int d = Math.abs(pplPos.get(j).x-stair.get(0).pos.x)+Math.abs(pplPos.get(j).y-stair.get(0).pos.y);
+                        ppl.add(new Person(d, 1));
+                    }
+                    else { //2번 계단
+                        int d = Math.abs(pplPos.get(j).x - stair.get(1).pos.x) + Math.abs(pplPos.get(j).y - stair.get(1).pos.y);
+                        ppl.add(new Person(d, 2));
+                    }
+                }
+ 
+                int tmpCnt = getCnt(); //이제 이 상황에서 모든 인원이 아래층에 도착하는 최소 시간을 구해봅시다.
+                usedTime = Math.min(usedTime, tmpCnt); //이전까지 구했던 최저거리보다 작다면 업데이트
+            }
+ 
+            sb.append("#"+tc+" ").append(usedTime).append("\n");
+ 
+        }
+        System.out.println(sb.toString());
+ 
+    }
+ 
+    public static List<Person> ppl;
+    public static List<Stair> stair;
+ 
+    public static int getCnt(){
+        int nextLvCnt=0; //다음 층에 내려간 사람의 인원
+        int usedTime=0; //전체 쓴 시간
+ 
+        while(nextLvCnt!=ppl.size()) { //모든 인원이 아래층에 내려갈 때까지 반복
+            usedTime++; //시간이 지납니다....
+ 
+            for (int i=0; i<ppl.size(); i++) { //모든 인원은 이 시간동안 뭘 하고 있었을까요? 
+                if (ppl.get(i).isNextLv) continue; //다음 층에 도달한 애들은 더 이상 검사 하지 않습니다.
+ 
+                if (ppl.get(i).leftTime==0 && !ppl.get(i).isArrived) { //계단에 도달한 경우
+                    if (ppl.get(i).dest==1) { //1번 계단이 목적지인 경우
+                        ppl.get(i).isArrived=true; //계단에 도착했다고 체크하고
+ 
+                        if (stair.get(0).pplCnt<3){ //계단을 탈 수 있는지 확인한다. 탈 수 있다면
+                            ppl.get(i).leftTime=stair.get(0).len; //계단을 내려가야 하는 시간만큼 더 가야하니 값을 변경하고
+                            stair.get(0).pplCnt++; //계단에 올라간 인원 수를 증가시킨다.
+                        }
+                        else { //탈 수 없다면 인원수 때문에 대기 중인 것을 기록하기 위해 leftTime을 임의로 -1로 저장한다. 
+                            ppl.get(i).leftTime=-1; 
+                        }
+                    }
+                    if (ppl.get(i).dest==2) { //2번 계단이 목적지인 경우
+                        ppl.get(i).isArrived=true;
+ 
+                        if ( stair.get(1).pplCnt<3) {
+                            ppl.get(i).leftTime=stair.get(1).len; 
+                            stair.get(1).pplCnt++; 
+                        }
+                        else {
+                            ppl.get(i).leftTime=-1;
+                        }
+                    }
+ 
+                }
+                else { //계단 도달 하는 거 외 모든 경우
+                    if (ppl.get(i).leftTime==-1){ //만약 계단에 인원이 꽉 차서 대기 중이라면
+                        //가만히 있는다.
+                    }
+                    else { //계단까지 이동 중이거나 계단을 내려가는 중인 경우
+                        ppl.get(i).leftTime--; 
+                        if (ppl.get(i).isArrived && ppl.get(i).leftTime==0) { //만약 계단을 다 내려갔다면
+                            stair.get( ppl.get(i).dest-1 ).pplCnt--; //계단의 인원수를 감소시키고
+                            ppl.get(i).isNextLv=true; //아래창에 도착했다고 체크해준다.
+                        }
+                    }
+                }
+            }
+
+            //모든 인원을 체크했으니 이제 계단 앞에서 대기 중인 애들이 계단을 탈 수 있는지 확인해준다.
+            for (int i=0; i<2; i++){ 
+                if (stair.get( i ).pplCnt<3){ //계단에 여유가 생겼다면
+                    for (int j=0; j<ppl.size(); j++){ 
+                        if (ppl.get(j).dest==i+1 && ppl.get(j).leftTime==-1){ //이 계단을 쓰기 위해 대기 중인 사람을 찾아서
+                            ppl.get(j).leftTime = stair.get( ppl.get(j).dest-1 ).len; //다음에 바로 사용할 수 있게 해준다.
+                            stair.get( i ).pplCnt++; //계단에 올라간 인간을 증가시킨다.
+                            if (stair.get( i ).pplCnt==3) break; //만약 계단을 사용하는 인원수가 3명이 되었다면 중단하고, 아니라면 더 계단에 올린다.
+                        }
+                    }
+                }
+            }
+ 
+            nextLvCnt=0; //이제 아래층에 도달한 애들이 몇명인지 확인한다.
+            for (int i=0; i<ppl.size(); i++) { 
+                if (ppl.get(i).isNextLv) nextLvCnt++;
+            }
+
+            //만약 아래층에 도달한 애들이 전원이라면 중단된다.
+        }
+ 
+        return usedTime; //전원이 아래층에 도달할 때까지 필요한 시간을 반환한다.
+    }
+ 
+    public static List<int[]> stairChoice;
+    public static int[] tmpStairChoice;
+    public static void powerSet(int idx){ //인간이 어떤 계단을 타는지에 대한 모든 조합을 구한다.
+        if (idx==pplPos.size()){
+            stairChoice.add(tmpStairChoice.clone());
+            return;
+        }
+ 
+        tmpStairChoice[idx]=0;
+        powerSet(idx+1);
+        tmpStairChoice[idx]=1;
+        powerSet(idx+1);
+    }
+}

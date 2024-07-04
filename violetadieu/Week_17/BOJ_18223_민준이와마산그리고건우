@@ -1,0 +1,36 @@
+import heapq
+from math import inf
+
+V, E, P = map(int, input().split())
+
+graph = [[] for _ in range(5002)]
+min_roots = [inf] * 5002
+
+def dijkstra(start, end):
+    pq = [(0, start)]
+    min_roots[start] = 0
+
+    while pq:
+        cur_d, cur_v = heapq.heappop(pq)
+
+        if min_roots[cur_v] < cur_d:
+            continue
+
+        for next_v, next_d in graph[cur_v]:
+            new_d = cur_d + next_d
+            if min_roots[next_v] > new_d:
+                min_roots[next_v] = new_d
+                heapq.heappush(pq, (new_d, next_v))
+
+    return min_roots[end]
+
+for _ in range(E):
+    u, v, d = map(int, input().split())
+    graph[u].append((v, d))
+    graph[v].append((u, d))
+
+min_root = dijkstra(1, V)
+f_root = dijkstra(1, P) + dijkstra(P, V)
+
+print("GOOD BYE" if min_root < f_root else "SAVE HIM")
+
