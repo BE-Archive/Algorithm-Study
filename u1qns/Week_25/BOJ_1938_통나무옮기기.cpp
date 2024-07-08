@@ -14,7 +14,7 @@ bool grid[MAX][MAX] = {false, };
 bool isValid(const int x, const int y)
 {
     if(x < 0 || y < 0 || x >= N || y >= N || grid[x][y])
-      return false;
+        return false;
     return true;
 }
 
@@ -38,7 +38,7 @@ int bfs()
     int answer = 0;
     Node dest = {(end[0].first == end[1].first), end[1].first, end[1].second};
 
-    std::queue<Node> q; // 통나무의 가로 세로 여부와 통나무 중앙 위치를 중심으로 저장
+    std::queue<Node> q;
     q.push({(start[0].first == start[1].first), start[1].first, start[1].second});
 
     bool visited[2][MAX][MAX] = {false, };
@@ -47,122 +47,53 @@ int bfs()
     while(!q.empty())
     {
         int qSize = q.size();
+        ++answer;
         while(qSize--)
         {
-            const int d = q.front().d;
-            const int x = q.front().x;
-            const int y = q.front().y;
-
-            if(isDone(q.front(), dest))
-                return answer;
+            int mx = q.front().x; int my = q.front().y;
+            int isHorizontal = q.front().d;
 
             q.pop();
 
-            if (!d) // 통나무가 세워져있음
+            int fx = (isHorizontal ? mx : mx-1 ); int fy = (isHorizontal ? my-1 : my);
+            int lx = (isHorizontal ? mx : mx+1 ); int ly = (isHorizontal ? my+1 : my);
+
+            for(int d=1; d<DIR_SIZE; d+=2)
             {
-                //U
-                if (isValid(x-1, y) && isValid(x-2, y)
-                    && !visited[d][x-1][y])
-                {
-                    visited[d][x-1][y] = true;
-                    q.push({d, x-1, y});
-                }
+                int x = mx + dx[d];
+                int y = my + dy[d];
 
-                //D
-                if (isValid(x+1, y) && isValid(x+2, y)
-                    && !visited[d][x+1][y])
-                {
-                    visited[d][x+1][y] = true;
-                    q.push({d, x+1, y});
-                }
+                if(!isValid(x, y) || visited[isHorizontal][x][y]
+                    || !isValid(fx + dx[d], fy + dy[d]) 
+                    || !isValid(lx + dx[d], ly + dy[d]))
+                    continue;
 
-                //L
-                if (isValid(x, y-1) && isValid(x-1, y-1) && isValid(x+1, y-1)
-                    && !visited[d][x][y-1])
-                {
-                    visited[d][x][y-1] = true;
-                    q.push({d, x, y-1});
-                }
+                if(isDone({isHorizontal, x, y}, dest))
+                    return answer;
 
-                //R
-                if (isValid(x, y+1) && isValid(x-1, y+1) && isValid(x+1, y+1)
-                    && !visited[d][x][y+1])
-                {
-                    visited[d][x][y+1] = true;
-                    q.push({d, x, y+1});
-                }
-
-                //T
-                if(!visited[!d][x][y])
-                {
-                    bool flag = true;
-                    for (int i = 0; i < DIR_SIZE; ++i)
-                    {
-                        if (!isValid(x + dx[i], y + dy[i])) {
-                            flag = false;
-                            break;
-                        }
-                    }
-                    if (flag) {
-                        visited[!d][x][y] = true;
-                        q.push({!d, x, y});
-                    }
-                }
-
+                visited[isHorizontal][x][y] = true;
+                q.push({isHorizontal, x, y});
             }
-            else // 통나무가 누워져있음
+
+            // TURN
+            if(visited[!isHorizontal][mx][my]) continue;
+
+            bool flag = true;
+            for (int d=0; d<DIR_SIZE; ++d)
             {
-                //U
-                if (isValid(x-1, y-1) && isValid(x-1, y) && isValid(x-1, y+1)
-                    && !visited[d][x-1][y])
+                if (!isValid(mx + dx[d], my + dy[d]))
                 {
-                    visited[d][x-1][y] = true;
-                    q.push({d, x-1, y});
+                    flag = false;
+                    break;
                 }
+            }
 
-                //D
-                if (isValid(x+1, y-1) && isValid(x+1, y) && isValid(x+1, y+1)
-                    && !visited[d][x+1][y])
-                {
-                    visited[d][x+1][y] = true;
-                    q.push({d, x+1, y});
-                }
-
-                //L
-                if (isValid(x, y-1) && isValid(x, y-2)
-                    && !visited[d][x][y-1])
-                {
-                    visited[d][x][y-1] = true;
-                    q.push({d, x, y-1});
-                }
-
-                //R
-                if (isValid(x, y+1) && isValid(x, y+2)
-                    && !visited[d][x][y+1])
-                {
-                    visited[d][x][y+1] = true;
-                    q.push({d, x, y+1});
-                }
-
-                //T
-                if(!visited[!d][x][y])
-                {
-                    bool flag = true;
-                    for (int i = 0; i < DIR_SIZE; ++i)
-                    {
-                        if (!isValid(x + dx[i], y + dy[i])) {
-                            flag = false;
-                            break;
-                        }
-                    }
-                    if (flag) {
-                        visited[!d][x][y] = true;
-                        q.push({!d, x, y});
-                    }
-                }
+            if (flag)
+            {
+                visited[!isHorizontal][mx][my] = true;
+                q.push({!isHorizontal, mx, my});
             }
         }
-        ++answer;
     }
 
     return 0;
@@ -171,6 +102,9 @@ int bfs()
 
 int main()
 {
+    std::ios_base::sync_with_stdio(false);
+    std::cin.tie(NULL);
+
     std::cin >> N;
 
     char ch;
