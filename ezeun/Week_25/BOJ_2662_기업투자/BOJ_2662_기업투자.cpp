@@ -11,7 +11,8 @@ typedef long long ll;
 int n,m; //투자금액, 기업개수
 int money[301][21]; // 투자액수, 기업 -> 이익
 int dp[301][21]; //투자금액 i원, 기업의 수 j일때의 최대이익
-int trace[21];
+int trace[301][21]; //각 단계에서의 최적 경로를 저장 (기업별 투자액수)
+int invest[21];
 int main() {
 
     //init
@@ -26,6 +27,7 @@ int main() {
     //m=1
     for(int i=1; i<=n; i++) {
         dp[i][1]=money[i][1];
+        trace[i][1] = i; // 기업 1에 i만원 투자
     }
 
     //m>=2
@@ -34,8 +36,7 @@ int main() {
             for(int k=0; k<=i; k++) {
                 if(dp[i][j]<dp[k][j-1]+money[i-k][j]) {
                     dp[i][j]=dp[k][j-1]+money[i-k][j];
-                    if(j==2) trace[j-1]=k;
-                    trace[j]= i-k;
+                    trace[i][j] = i - k; // j번째 기업에 투자한 금액
                 }
                 // dp[i][j] = max(dp[i][j], dp[k][j-1]+money[i-k][j]);
                 // cout<< i<<" "<<j<<" "<<k<<" "<<dp[i][j]<<'\n';
@@ -43,6 +44,13 @@ int main() {
         }
     }
     cout<< dp[n][m]<<'\n';
-    for(int j=1; j<=m; j++) cout<<trace[j]<<" ";
+
+    // for(int j=1; j<=m; j++) cout<<trace[j]<<" ";
+    int remain = n;
+    for(int j=m; j>=1; j--) {
+        invest[j] = trace[remain][j];
+        remain -= invest[j];
+    }
+    for(int j=1; j<=m; j++) cout<< invest[j]<<" ";
     return 0;
 }
