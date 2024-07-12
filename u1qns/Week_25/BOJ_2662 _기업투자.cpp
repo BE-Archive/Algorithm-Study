@@ -1,55 +1,68 @@
 #include <iostream>
 #include <vector>
-#include <string>
+#include <algorithm>
 
-int main() {
-    std::ios::sync_with_stdio(false);
-    std::cin.tie(nullptr);
-    std::cout.tie(nullptr);
+#define N_MAX 301
+#define M_MAX 21
 
-    int N, M;
+typedef std::pair<int, int> pii;
+
+int N, M;
+int arr[M_MAX][N_MAX];
+int dp[M_MAX][N_MAX];
+std::vector<pii> list[M_MAX][N_MAX];
+
+int main()
+{
+    std::ios_base::sync_with_stdio(false);
+    std::cin.tie(NULL);
+
+            int temp;
+
     std::cin >> N >> M;
 
-    int cnt[301] = {0, };
-    int weight[301] = {0, };
-    int value[301] = {0, };
-    int dp[301] = {0, };
-    int cost_idx[301];
-
-    int tmp, idx;
-    for(int i=0; i<N; ++i)
+    for (int i = 1; i <= N; ++i)
     {
-
-        std::cin >> weight[i];
-        value[i] = 0;
-
-        for(int j=0; j<M; ++j)
+        std::cin >> temp;
+        for (int j = 1; j <= M; ++j)
         {
-            std::cin >> tmp;
-            if(value[i] < tmp)
-            {
-                value[i] = tmp;
-                idx = j;
-            }
+            std::cin >> arr[j][i];
         }
-        cost_idx[i] = idx;
     }
 
-    for (int i = 1; i <= N; i++)
+    for (int i = 1; i <= M; ++i)
     {
-        for (int j = N; j >= 1; j--)
+        for (int j = 1; j <= N; ++j)
         {
-            if (weight[i] <= j)
-            { // 넣을 수 있다면?
-                if(dp[j] < dp[j - weight[i]] + value[i])
-                {
-                    dp[j] = dp[j - weight[i]] + value[i];
-                }
+            for (int k = N; k > 0; --k)
+            { 
+                    if(j < k) continue;
+                    if (dp[i][j] < dp[i - 1][j])
+                    {
+                        dp[i][j] = dp[i - 1][j];
+                        list[i][j] = list[i - 1][j];
+                    }
+                    if (dp[i][j] < dp[i - 1][j - k] + arr[i][k])
+                    {
+                        dp[i][j] = dp[i - 1][j - k] + arr[i][k];
+                        list[i][j] = list[i - 1][j - k];
+                        list[i][j].push_back({i, k});
+                    }
             }
         }
     }
 
-    std::cout << dp[N];
+    std::cout << dp[M][N] << "\n";
+    std::vector<int> answer(M + 1, 0);
+    for (const auto& p : list[M][N])
+    {
+        answer[p.first] = p.second;
+    }
+
+    for (int i = 1; i <= M; ++i)
+    {
+        std::cout << answer[i] << " ";
+    }
 
     return 0;
 }
