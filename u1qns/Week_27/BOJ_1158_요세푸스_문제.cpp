@@ -11,16 +11,21 @@ int main() {
         q.push(i+1);
 
     std::cout << "<";
+    
     int front;
     while(!q.empty()) {
+        
         for(int i=0; i<K-1; ++i) {
             front = q.front();
             q.pop();
             q.push(front);
         }
+        
         std::cout << q.front();
-        if(q.size() != 1) std::cout << ", ";
         q.pop();
+
+        if(!q.empty()) 
+            std::cout << ", ";
     }
 
     std::cout << ">";
