@@ -1,0 +1,13 @@
+def is_palindrome(S):
+    return S == S[::-1]
+
+S = input()
+l = len(S)
+answer = l * 2
+
+for i in range(l):
+    if is_palindrome(S[i:]):
+        answer = i + l
+        break
+
+print(answer)
