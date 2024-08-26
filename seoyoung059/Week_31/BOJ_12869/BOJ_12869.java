@@ -1,23 +1,8 @@
-## 풀이과정
-- 문제 이해
-  - 뮤탈리스크는 한번에 3개의 SCV를 공격할 수 있으며, 세 SCV에게 각각 9, 3, 1씩의 체력 피해를 입힐 수 있다.
-  - SCV의 체력이 0 또는 그 이하가 되면 그 즉시 파괴된다.
-  - 한 번의 공격에서 같은 SCV를 여러 번 공격할 수 없다.
-  - SCV는 최대 3마리이며, 체력은 60보다 작거나 같은 자연수이다.
-- 문제 풀이
-  - 처음에는 Priority Queue를 이용하여 체력이 가장 많은 SCV부터 더 큰 체력 피해를 입히면 가장 적은 공격 횟수로 모두 처치할 수 있을 것이라고 생각했다.
-    - 그러나 이 방법은 예시1과 힌트에 나타난 것과 같이 반례가 있다.
-  - 그 다음으로 고민하다가, SCV가 최대 3마리이고, 각각의 체력은 60보다 작거나 같으므로 DFS와 Visited 배열을 통해 문제를 풀이하였다.
+package Week_31.BOJ_12869;
 
-## 코드
-```java
-package Week_30.BOJ_12869;
-
-import javax.xml.transform.Source;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class BOJ_12869 {
@@ -64,10 +49,10 @@ public class BOJ_12869 {
                 }
             }
         }
+//        System.out.println(" = " + Arrays.toString(hp));
         answer = Integer.MAX_VALUE;
         attack(hp, 1);
         System.out.println(answer-1);
 
     }
 }
-```
