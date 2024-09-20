@@ -3,7 +3,7 @@ public class SWEA_병사_관리 {
 	public class Soldier {
 		int id;
 		int version;
-		Soldier next; //c++과 달리 프인터 없이 next를 관리하는군...
+		Soldier next;
 
 		public Soldier(int id, int version, Soldier next) {
 			this.id = id;
@@ -17,98 +17,105 @@ public class SWEA_병사_관리 {
 		Soldier[] tail = new Soldier[6];
 	}
 
-	public Soldier[] soldiers = new Soldier[200005];
+	public Soldier[] soldiers = new Soldier[200055];
 	public Team[] teams = new Team[6];
-	public int[] versions = new int[100005];
-	public int[] toTeam = new int[100005];
-	public int soldierCnt=0;
+	public int[] versions = new int[100055];
+	public int[] toTeam = new int[100055];
+	public int soldierCnt = 0;
 
-	public Soldier getNewSoldier(int mID, Soldier next){
+	public Soldier getNewSoldier(int mID, Soldier next) {
 		Soldier newSol = soldiers[soldierCnt];
 		soldierCnt++;
-		newSol.id=mID;
-		versions[mID]++;
-		newSol.version=versions[mID];
-		newSol.next=next;
+		newSol.id = mID; //id
+		versions[mID]++; //version
+		newSol.version = versions[mID];
+		newSol.next = next; //팀 그룹 내 점수 소그룹에서 사용
 		return newSol;
 	}
 
 	public void init() {
-		soldierCnt=0;
+		soldierCnt = 0;
 
-		for (int i=0; i<200005; i++){
-			soldiers[i] = new Soldier(0,0,null);
+		for (int i = 0; i < 200055; i++) {
+			soldiers[i] = new Soldier(0, 0, null);
 		}
 
-		for (int i=1; i<6; i++){
+		for (int i = 1; i <= 5; i++) {
 			teams[i] = new Team();
-			for (int j=1; j<6; j++){
-				teams[i].head[j] = new Soldier(0,0,null);
-				teams[i].tail[j] = new Soldier(0,0,null);
+			for (int j = 1; j <= 5; j++) {
+				//첫번째 수정 지점.
+				teams[i].head[j] = getNewSoldier(0, null);
+				teams[i].tail[j] = teams[i].head[j];
 			}
 		}
 
-		for (int i=0; i<100005; i++){
-			versions[i]=0;
-			toTeam[i]=0;
+		for (int i = 0; i < 100055; i++) {
+			versions[i] = 0;
+			toTeam[i] = 0;
 		}
 	}
 
-	public void hire(int mID, int mTeam, int mScore) {  // O(1)
+	public void hire(int mID, int mTeam, int mScore) { // O(1)
 		Soldier newSoldier = getNewSoldier(mID, null);
-		teams[mTeam].tail[mScore].next=newSoldier;
-		teams[mTeam].tail[mScore]=newSoldier;
-		toTeam[mID]=mTeam;
+		teams[mTeam].tail[mScore].next = newSoldier;
+		teams[mTeam].tail[mScore] = newSoldier;
+		toTeam[mID] = mTeam;
 	}
 
-	public void fire(int mID) {  // O(1)
-		versions[mID]=-1;
+	public void fire(int mID) { // O(1)
+		versions[mID] = -1;
 	}
 
-	public void updateSoldier(int mID, int mScore) {  // O(1)
+	public void updateSoldier(int mID, int mScore) { // O(1)
 		hire(mID, toTeam[mID], mScore);
 	}
 
-	public void updateTeam(int mTeam, int mChangeScore) {  // O(1)
-		if (mChangeScore<0){
-			for (int i=1; i<=5; i++){
-				int changedScore = (i+mChangeScore)<=1 ? 1 : i+mChangeScore;
+	public void updateTeam(int mTeam, int mChangeScore) { // O(1)
+		if (mChangeScore < 0) {
+			for (int i = 2; i <= 5; i++) {
+				int changedScore = (i + mChangeScore) <= 1 ? 1 : i + mChangeScore;
 
-				if (teams[mTeam].head[i].next == null) continue;
+				if (teams[mTeam].head[i].next == null)
+					continue;
 
-				teams[mTeam].tail[changedScore].next=teams[mTeam].head[i].next;
-				teams[mTeam].tail[changedScore] = teams[mTeam].head[i];
-				teams[mTeam].head[i].next=null;
-				teams[mTeam].tail[i]=teams[mTeam].head[i];
+				//두번째 수정 지점
+				teams[mTeam].tail[changedScore].next = teams[mTeam].head[i].next;
+				teams[mTeam].tail[changedScore] = teams[mTeam].tail[i];
+
+				teams[mTeam].head[i].next = null;
+				teams[mTeam].tail[i] = teams[mTeam].head[i];
 			}
 		}
-		else if (mChangeScore>0){
-			for (int i=5; i>=1; i--){
-				int changedScore = (i+mChangeScore)>=5 ? 5 : i+mChangeScore;
+		if (mChangeScore > 0) {
+			for (int i = 4; i >= 1; i--) {
+				int changedScore = (i + mChangeScore) >= 5 ? 5 : i + mChangeScore;
 
 				if (teams[mTeam].head[i].next == null) continue;
 
-				teams[mTeam].tail[changedScore].next=teams[mTeam].head[i].next;
-				teams[mTeam].tail[changedScore] = teams[mTeam].head[i];
-				teams[mTeam].head[i].next=null;
-				teams[mTeam].tail[i]=teams[mTeam].head[i];
+				//두번째 수정 지점
+				teams[mTeam].tail[changedScore].next = teams[mTeam].head[i].next;
+				teams[mTeam].tail[changedScore] = teams[mTeam].tail[i];
+
+				teams[mTeam].head[i].next = null;
+				teams[mTeam].tail[i] = teams[mTeam].head[i];
 			}
 		}
 	}
 
-	public int bestSoldier(int mTeam) {  // O(N)
-		int bestScoreID=0;
+	public int bestSoldier(int mTeam) { // O(N)
+		int bestScoreID = 0;
 
-		for (int i=5; i>=1; i--){
+		for (int i = 5; i >= 1; i--) {
 			Soldier cur = teams[mTeam].head[i].next;
-			while (cur!=null){
-				if (cur.version==versions[cur.id]){
-					bestScoreID= cur.id>bestScoreID ? cur.id : bestScoreID;
+			while (cur != null) {
+				if (cur.version == versions[cur.id]) {
+					bestScoreID = cur.id > bestScoreID ? cur.id : bestScoreID;
 				}
 
 				cur = cur.next;
 			}
-			if (bestScoreID!=0) break;
+			if (bestScoreID != 0)
+				break;
 		}
 
 		return bestScoreID;
