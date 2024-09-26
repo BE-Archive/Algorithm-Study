@@ -1,0 +1,116 @@
+package Week_36.BOJ_11559;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayDeque;
+
+public class BOJ_11559 {
+
+    static int[][] arr;
+    static int[][] visited;
+    static final int y = 12, x = 6;
+
+    static boolean pop(int cnt) {
+        boolean popped = false;
+        ArrayDeque<int[]> q = new ArrayDeque<>();
+        ArrayDeque<int[]> popping = new ArrayDeque<>();
+
+        int[] dy = {1, -1, 0, 0};
+        int[] dx = {0, 0, 1, -1};
+        int[] curr, cell;
+        int ny, nx;
+
+        for (int i = 0; i < y; i++) {
+            for (int j = 0; j < x; j++) {
+                if (visited[i][j] == cnt || arr[i][j] == 0) continue;
+                cell = new int[]{i, j};
+                q.offer(cell);
+                popping.offer(cell);
+                visited[i][j] = cnt;
+                while (!q.isEmpty()) {
+                    curr = q.poll();
+                    for (int k = 0; k < 4; k++) {
+                        ny = curr[0] + dy[k];
+                        nx = curr[1] + dx[k];
+                        if (ny < 0 || ny >= y || nx < 0 || nx >= x) continue;
+                        if (arr[ny][nx] == 0 || visited[ny][nx] == cnt) continue;
+                        if (arr[ny][nx] == arr[curr[0]][curr[1]]) {
+                            cell = new int[]{ny, nx};
+                            q.offer(cell);
+                            popping.offer(cell);
+                            visited[ny][nx] = cnt;
+                        }
+                    }
+                }
+                if (popping.size() >= 4) {
+                    while (!popping.isEmpty()) {
+                        curr = popping.poll();
+                        arr[curr[0]][curr[1]] = 0;
+                    }
+                    popped = true;
+                }
+                popping.clear();
+            }
+        }
+
+        return popped;
+    }
+
+
+    static void down() {
+        for (int i = 0; i < x; i++) {
+            for (int j = y - 1; j >= 0; j--) {
+                if (arr[j][i] == 0) {
+                    for (int k = j - 1; k >= 0; k--) {
+                        if (arr[k][i] > 0) {
+                            arr[j][i] = arr[k][i];
+                            arr[k][i] = 0;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        arr = new int[y][x];
+        visited = new int[y][x];
+
+        // 입력
+        String str;
+        for (int i = 0; i < y; i++) {
+            str = br.readLine();
+            for (int j = 0; j < x; j++) {
+                switch (str.charAt(j)) {
+                    case 'R':
+                        arr[i][j] = 1;
+                        break;
+                    case 'G':
+                        arr[i][j] = 2;
+                        break;
+                    case 'B':
+                        arr[i][j] = 3;
+                        break;
+                    case 'P':
+                        arr[i][j] = 4;
+                        break;
+                    case 'Y':
+                        arr[i][j] = 5;
+                        break;
+                }
+            }
+        }
+
+        int cnt = 1;
+        while (pop(cnt)) {
+            cnt++;
+            down();
+        }
+
+        System.out.println(cnt - 1);
+    }
+}
