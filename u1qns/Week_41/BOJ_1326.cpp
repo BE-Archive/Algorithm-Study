@@ -24,27 +24,21 @@ int bfs()
             int now = q.front();  q.pop();
 
             // 앞으로 감
-            for(int i = 1; ; ++i)
+            for(int next = now + stone[now]; next<=N ; next+= stone[now])
             {
-                int next = now + (stone[now] * i);
                 if(next == to) return distance;
 
-                if(next < 1 || next > N) break;
                 if(visited[next]) continue;
-
                 visited[next] = true;
                 q.push(next);
             }
 
             // 뒤로 감
-            for(int i = 1; ; ++i)
+            for(int next = now - stone[now]; next>0; next-=stone[now])
             {
-                int next = now - (stone[now] * i);
                 if(next == to) return distance;
 
-                if(next < 1 || next > N) break;
                 if(visited[next]) continue;
-
                 visited[next] = true;
                 q.push(next);
             }
