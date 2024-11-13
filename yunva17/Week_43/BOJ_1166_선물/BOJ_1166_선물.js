@@ -10,14 +10,17 @@ let input = require("fs")
 let [N, L, W, H] = input[0].split(" ").map(Number);
 
 let left = 0;
-let right = Math.min(L, W, H);
+let right = Math.max(L, W, H);
 
 while (left < right) {
   let mid = (left + right) / 2;
 
   if (Math.floor(L / mid) * Math.floor(W / mid) * Math.floor(H / mid) >= N) {
+    if (left === mid) break;
     left = mid;
   } else {
+    if (right === mid) break;
+
     right = mid;
   }
 }
